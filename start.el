@@ -34,6 +34,3 @@
 
 (if inhibit-startup-message
     (add-hook 'after-init-hook (lambda () (setq inhibit-startup-message t))))
-
-(when (not is-win32)
-  (load "linux"))

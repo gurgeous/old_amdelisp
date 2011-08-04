@@ -32,7 +32,8 @@
       speedbar-track-mouse-flag nil
       track-eol nil
       truncate-partial-width-windows nil
-      w32-use-full-screen-buffer nil)
+      w32-use-full-screen-buffer nil
+      x-select-enable-clipboard t)
 (set-clipboard-coding-system 'utf-8)
 
 ;; cleanup make output
