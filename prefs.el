@@ -3,10 +3,13 @@
 ;;; copy this into your ~/.emacs to personalize.
 ;;;
 
+
 ;; you probably don't care about these
 (setq auto-revert-interval 2
       auto-save-list-file-prefix nil
       backup-by-copying t
+      comint-input-ring-size 99      
+      completion-ignore-case t
       default-major-mode 'text-mode
       default-tab-width 4
       display-time-format nil
@@ -18,10 +21,13 @@
       jit-lock-defer-contextually t
       jit-lock-stealth-nice 0.5
       jit-lock-stealth-time 1
+      line-move-visual nil
       line-number-display-limit 3000000
       line-number-display-limit-width 4000
       message-log-max 200
       PC-word-delimiters "-_.="
+      read-file-name-completion-ignore-case t
+      read-buffer-completion-ignore-case t
       save-abbrevs nil
       speedbar-track-mouse-flag nil
       track-eol nil
@@ -71,6 +77,8 @@
 
 ;; mini-buffer
 (define-key minibuffer-local-map "\t" 'hippie-expand)
+(define-key minibuffer-local-must-match-map "\t" 'minibuffer-complete)
+(define-key minibuffer-local-filename-completion-map "\t" 'minibuffer-complete)
    
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; movement
@@ -117,9 +125,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; compilation
 
-(global-set-key "\M-m"      'make)
-(global-set-key "\M-p"      'make-remake)
-(global-set-key-override "\M-s" 'make-magic)
 (global-set-key [M-up]      'previous-error)
 (global-set-key [M-down]    'next-error)
 

@@ -171,8 +171,6 @@ will use the 256 degraded color mode."
          ;(font-lock-keyword-face ((t (:foreground ,green))))
          ;(font-lock-string-face ((t (:foreground ,cyan))))
          ;(font-lock-type-face ((t (:foreground ,yellow))))
-
-         ; amd
          (font-lock-comment-face ((t (:foreground ,green :slant ,italic))))         
          (font-lock-constant-face ((t (:foreground ,cyan))))
          (font-lock-function-name-face ((t (:foreground ,yellow))))
@@ -184,8 +182,12 @@ will use the 256 degraded color mode."
          (font-lock-warning-face ((t (:foreground ,red :weight ,bold))))
          (font-lock-doc-face ((t (:foreground ,cyan :slant ,italic))))
          (font-lock-color-constant-face ((t (:foreground ,green))))
+
+         ; amd
+         ;; (font-lock-comment-delimiter-face
+         ;;  ((t (:foreground ,base01 :weight ,bold))))
          (font-lock-comment-delimiter-face
-          ((t (:foreground ,base01 :weight ,bold))))
+          ((t (:foreground ,green :weight ,bold))))
          (font-lock-doc-string-face ((t (:foreground ,green))))
          (font-lock-preprocessor-face ((t (:foreground ,orange))))
          (font-lock-reference-face ((t (:foreground ,cyan))))

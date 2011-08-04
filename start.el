@@ -25,8 +25,6 @@
 (load "modes")
 (when window-system
   (load "window"))
-(when (file-exists-p "company.el")
-  (load "company"))
 (load "prefs")
 (load (format "%s/lisp/loaddefs" AMDELISP))
 
@@ -39,6 +37,3 @@
 
 (when (not is-win32)
   (load "linux"))
-
-(when (>= emacs-major-version 22)
-  (load "22"))
