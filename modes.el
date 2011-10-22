@@ -204,7 +204,16 @@ functions from one source file."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; html and friends
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; hexcolor
+
+(defun color-get-intensity (cstring)
+  (let* ((rgb (x-color-values cstring))
+         (r (nth 0 rgb))
+         (g (nth 1 rgb))
+         (b (nth 2 rgb)))
+    (/ (+ r g b) 3)))
+
 (defun hex-color-face (s)
   (list
    :foreground
@@ -213,24 +222,47 @@ functions from one source file."
    s))
 
 (defvar hexcolor-keywords
-  '(("#[A-Fa-f0-9]\\{6\\}"
-     (0 (put-text-property (match-beginning 0)
-                           (match-end 0)
-                           'face (hex-color-face (match-string-no-properties 0)))))))
+  `((,(concat
+       "\\(#[0-9a-fA-F]\\{3\\}[0-9a-fA-F]\\{3\\}?\\|"
+       (regexp-opt (x-defined-colors) 'words)
+       "\\);")
+     (0 (put-text-property (match-beginning 1)
+                           (match-end 1)
+                           'face (hex-color-face (match-string-no-properties 1)))))))
 
 (defun hexcolor-add-to-font-lock ()
   (interactive)
   (font-lock-add-keywords nil hexcolor-keywords))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; css
+
 (eval-when-compile (require 'css-mode))
 (defun my-css-setup ()
   (setq css-indent-offset 2)
-  (hexcolor-add-to-font-lock))
-
+  (hexcolor-add-to-font-lock)
+  )
 (eval-after-load "css-mode"
   '(add-hook 'css-mode-hook 'my-css-setup))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; scss
+
+(defconst scss-font-lock-keywords
+  ;; Variables
+  '(("$[a-z_-][a-z-_0-9]*" . font-lock-constant-face)))
+
+(define-derived-mode scss-mode css-mode "SCSS"
+  (font-lock-add-keywords nil scss-font-lock-keywords)
+  (font-lock-add-keywords nil (list (cons "&" 'font-lock-string-face)))
+  ;; Add the single-line comment syntax ('//', ends with newline)
+  ;; as comment style 'b' (see "Syntax Flags" in elisp manual)
+  (modify-syntax-entry ?/ ". 124b" css-mode-syntax-table)
+  (modify-syntax-entry ?\n "> b" css-mode-syntax-table))
+
+(add-to-list 'auto-mode-alist '("\\.scss" . scss-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; js
 (eval-when-compile (load "js2"))
 (setq js2-mirror-mode nil)
@@ -250,6 +282,22 @@ functions from one source file."
   (hexcolor-add-to-font-lock))
 (eval-after-load "js2"
   '(add-hook 'js2-mode-hook 'my-js2-setup))
+
+;; coffee
+(eval-when-compile (require 'coffee-mode))
+(defun my-coffee-setup ()
+  (make-local-variable 'standard-indent)
+  (setq
+   backward-delete-char-untabify-method 'untabify   
+   coffee-tab-width 2
+   standard-indent 2
+   tab-width 2)
+  (define-key coffee-mode-map [C-left] 'my-decrease)  
+  (define-key coffee-mode-map [C-right] 'my-increase)
+  )  
+(eval-after-load "coffee-mode"
+  '(add-hook 'coffee-mode-hook 'my-coffee-setup))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; php
@@ -617,7 +665,6 @@ column point starts at, `tab-to-tab-stop' is done instead."
 
 (eval-when-compile (require 'haml-mode))
 (defun my-haml-setup ()
-  (modify-syntax-entry ?_ ".")
   (make-local-variable 'standard-indent)
   (setq standard-indent 2)
   (define-key haml-mode-map [C-left] 'my-decrease)  
@@ -634,6 +681,8 @@ column point starts at, `tab-to-tab-stop' is done instead."
 
 (eval-when-compile (require 'sh-script))
 (defun my-sh-setup ()
+  (define-key sh-mode-map "\C-c\C-c" 'comment-region)
+  (define-key sh-mode-map "\C-c\C-u" 'uncomment-region)
   (setq sh-basic-offset 2))
 (eval-after-load "sh-script"
   '(add-hook 'sh-mode-hook 'my-sh-setup))
@@ -661,7 +710,6 @@ column point starts at, `tab-to-tab-stop' is done instead."
       ispell-silently-savep t)
      (set-default 'ispell-skip-html t)))
   
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; git
 

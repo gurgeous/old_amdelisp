@@ -7,6 +7,10 @@
 (when (not AMDELISP)
   (error "You must set AMDELISP!"))
 
+; check version
+(when (< (string-to-number (substring emacs-version 0 2)) 23)
+  (error "AMDELISP only works with emacs 23 or higher"))
+
 (setq load-path (cons AMDELISP load-path))
 (let ((old-dir default-directory))
   (unwind-protect
