@@ -230,17 +230,13 @@ functions from one source file."
                            (match-end 1)
                            'face (hex-color-face (match-string-no-properties 1)))))))
 
-(defun hexcolor-add-to-font-lock ()
-  (interactive)
-  (font-lock-add-keywords nil hexcolor-keywords))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; css
 
 (eval-when-compile (require 'css-mode))
 (defun my-css-setup ()
   (setq css-indent-offset 2)
-  (hexcolor-add-to-font-lock)
+  (font-lock-add-keywords nil hexcolor-keywords)
   )
 (eval-after-load "css-mode"
   '(add-hook 'css-mode-hook 'my-css-setup))
@@ -278,8 +274,7 @@ functions from one source file."
   (make-local-variable 'standard-indent)
   (setq standard-indent 2)
   (define-key js2-mode-map [C-left] 'my-decrease)  
-  (define-key js2-mode-map [C-right] 'my-increase)
-  (hexcolor-add-to-font-lock))
+  (define-key js2-mode-map [C-right] 'my-increase))
 (eval-after-load "js2"
   '(add-hook 'js2-mode-hook 'my-js2-setup))
 
@@ -297,7 +292,7 @@ functions from one source file."
   )  
 (eval-after-load "coffee-mode"
   '(add-hook 'coffee-mode-hook 'my-coffee-setup))
-
+(add-to-list 'auto-mode-alist '("\\.coffee" . coffee-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; php
@@ -715,3 +710,13 @@ column point starts at, `tab-to-tab-stop' is done instead."
 
 (add-to-list 'vc-handled-backends 'Git)
 (setq vc-git-diff-switches '("--ignore-space-change"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; csharp
+
+(defun my-csharp-mode ()
+  (setq indent-tabs-mode nil)  
+  (local-set-key (kbd "{") 'c-electric-brace))
+(eval-after-load "csharp-mode"
+  '(add-hook 'csharp-mode-hook 'my-csharp-mode))
+(setq csharp-want-flymake-fixup nil)
