@@ -1,19 +1,5 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;; mode defaults ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun autoloads (file &rest funcs)
-  "A helper function written by jp that lets you autoload many
-functions from one source file."
-  (let ((result))  
-    (while (not (null funcs))  
-      (let ((func-string (format "%s" (car funcs))))  
-        (setq result (cons `(autoload (quote ,(car funcs))  
-                              ,file
-                              ,func-string  
-                              (quote ,(car funcs)))  
-                           result)))  
-      (setq funcs (cdr funcs)))  
-    (eval `(progn ,@result))))  
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; etags
 
@@ -79,16 +65,6 @@ functions from one source file."
         fill-column 80
         indent-tabs-mode nil
         )
-  (when window-system
-    ;; add some extra types
-    (setq c++-font-lock-extra-types
-          (list
-           (eval-when-compile
-             (regexp-opt
-              '( ;; vb
-                "var" "function"
-                )))))
-    )
   (c-setup-filladapt)
   (define-key c-mode-base-map "\C-m" `c-context-line-break)
   (define-key c-mode-base-map "\C-c\C-u" 'uncomment-region))
@@ -144,6 +120,15 @@ functions from one source file."
 (defun adjust-autoloads ()
   (delete '("\\.[ch]\\'" . c-mode) auto-mode-alist))
 (add-hook 'after-init-hook 'adjust-autoloads)
+
+;; csharp
+
+(defun my-csharp-mode ()
+  (setq indent-tabs-mode nil)  
+  (local-set-key (kbd "{") 'c-electric-brace))
+(eval-after-load "csharp-mode"
+  '(add-hook 'csharp-mode-hook 'my-csharp-mode))
+(setq csharp-want-flymake-fixup nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; text
@@ -260,6 +245,7 @@ functions from one source file."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; js
+
 (eval-when-compile (load "js2"))
 (setq js2-mirror-mode nil)
 (defun my-js2-setup ()
@@ -596,7 +582,7 @@ column point starts at, `tab-to-tab-stop' is done instead."
 (setq auto-mode-alist (cons '("\\.g\\'" . antlr-mode) auto-mode-alist))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; turn in image modes
+;; turn on image modes
 
 (auto-image-file-mode t)
 
@@ -608,6 +594,7 @@ column point starts at, `tab-to-tab-stop' is done instead."
 
 (defun my-ruby-setup ()
   (setq indent-tabs-mode nil)
+  (setq ruby-insert-encoding-magic-comment nil)
   (define-key ruby-mode-map "\C-m" 'newline-and-indent))
 ;  (require 'ruby-electric)
 ;  (ruby-electric-mode))
@@ -626,8 +613,9 @@ column point starts at, `tab-to-tab-stop' is done instead."
     (font-lock-add-keywords 'ruby-mode ruby-added-font-lock-keywords)))
 
 (add-to-list 'auto-mode-alist '("\\.rb\\'" . ruby-mode))
-(add-to-list 'auto-mode-alist '("/\\(Rake\\|Gem\\)file$" . ruby-mode))
-(add-to-list 'auto-mode-alist '("\\.\\(rake\\|rxml\\|pill\\|irbrc\\)\\'$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("/\\(Rake\\|Gem\\|Cap\\|Tel\\)file$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.\\(rake\\|rxml\\|pill\\|irbrc\\|Rules\\)\\'$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.\\(sinew\\|gemspec\\|builder\\)$" . ruby-mode))
 (add-to-list 'interpreter-mode-alist '("ruby" . ruby-mode))
 
 (define-generic-mode 'yaml-mode
@@ -685,11 +673,14 @@ column point starts at, `tab-to-tab-stop' is done instead."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; markdown-mode
 
+(eval-when-compile (require 'markdown-mode))
 (autoload 'markdown-mode "markdown-mode.el"
    "Major mode for editing Markdown files" t)
 (setq auto-mode-alist
    (cons '("\\.md" . markdown-mode) auto-mode-alist))
 (defun my-markdown-setup ()
+  (turn-on-auto-fill)  
+  (define-key markdown-mode-map (kbd "<tab>") 'clever-hippie-tab)
   (modify-syntax-entry ?\" "."))  
 (eval-after-load "markdown-mode"
   '(add-hook 'markdown-mode-hook 'my-markdown-setup))
@@ -712,11 +703,7 @@ column point starts at, `tab-to-tab-stop' is done instead."
 (setq vc-git-diff-switches '("--ignore-space-change"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; csharp
+;; grep
 
-(defun my-csharp-mode ()
-  (setq indent-tabs-mode nil)  
-  (local-set-key (kbd "{") 'c-electric-brace))
-(eval-after-load "csharp-mode"
-  '(add-hook 'csharp-mode-hook 'my-csharp-mode))
-(setq csharp-want-flymake-fixup nil)
+(eval-after-load "grep"
+  '(grep-apply-setting 'grep-command "grep -nH -i "))

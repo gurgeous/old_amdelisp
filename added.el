@@ -301,3 +301,15 @@ If the region is not active, activate the current line."
     (save-excursion
       (expand-region-to-whole-lines)
       (decrease-left-margin (region-beginning) (region-end) nil))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; kill buffers matching a regex
+
+(defun kill-buffers (regexp)
+  (interactive "sKill buffers with file names matching this regex: ")
+  (dolist (buffer (buffer-list))
+    (let ((file-name (buffer-file-name buffer)))
+      (when (and file-name
+                 (string-match regexp file-name))
+        (message "Killing %s" file-name)
+        (kill-buffer buffer)))))
