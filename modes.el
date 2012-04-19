@@ -652,7 +652,8 @@ column point starts at, `tab-to-tab-stop' is done instead."
   (setq standard-indent 2)
   (define-key haml-mode-map [C-left] 'my-decrease)  
   (define-key haml-mode-map [C-right] 'my-increase)
-  (setq haml-backspace-backdents-nesting nil))
+  (setq haml-backspace-backdents-nesting nil)
+  (modify-syntax-entry ?_ "." haml-mode-syntax-table))  
 (eval-after-load "haml-mode"
   '(add-hook 'haml-mode-hook 'my-haml-setup))
 
