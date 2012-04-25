@@ -246,22 +246,23 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; js
 
-(eval-when-compile (load "js2"))
-(setq js2-mirror-mode nil)
+(eval-when-compile (load "js2-mode"))
 (defun my-js2-setup ()
   (make-local-variable 'backward-delete-char-untabify-method)
   (setq
    backward-delete-char-untabify-method 'untabify
-   indent-line-function 'indent-relative-maybe
-   js2-auto-indent-p nil
    js2-mode-escape-quotes nil
+   js2-basic-offset 2
+   js2-enter-indents-newline t
    tab-width 2)
-  (define-key js2-mode-map "\C-m" 'newline-and-indent)
-  (make-local-variable 'standard-indent)
-  (setq standard-indent 2)
+  ;; use this to turn OFF the standard js stuff
+  ;; indent-line-function 'indent-relative-maybe
+  ;; (define-key js2-mode-map "\C-m" 'newline-and-indent)
+  ;; (make-local-variable 'standard-indent)
+  ;; (setq standard-indent 2)
   (define-key js2-mode-map [C-left] 'my-decrease)  
   (define-key js2-mode-map [C-right] 'my-increase))
-(eval-after-load "js2"
+(eval-after-load "js2-mode"
   '(add-hook 'js2-mode-hook 'my-js2-setup))
 
 ;; coffee

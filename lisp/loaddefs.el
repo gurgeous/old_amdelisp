@@ -230,7 +230,7 @@ Initialize the color theme package by loading color-theme-libraries.
 ;;;;;;  csharp-make-tool csharp-want-imenu csharp-want-yasnippet-fixup
 ;;;;;;  csharp-want-flymake-fixup csharp-mode-hook) "csharp-mode-0.8.5"
 ;;;;;;  "../../../../../../mnt/d2/home/amd/Dropbox/work/elisp/emacslib/csharp-mode-0.8.5.el"
-;;;;;;  (20163 2407))
+;;;;;;  (20163 2893))
 ;;; Generated autoloads from ../../../../../../mnt/d2/home/amd/Dropbox/work/elisp/emacslib/csharp-mode-0.8.5.el
 
 (defvar csharp-mode-hook nil "\
@@ -496,7 +496,7 @@ Not documented
 ;;;***
 
 ;;;### (autoloads (haml-mode) "haml-mode" "../../../../../../mnt/d2/home/amd/Dropbox/work/elisp/emacslib/haml-mode.el"
-;;;;;;  (19631 21426))
+;;;;;;  (20360 30858))
 ;;; Generated autoloads from ../../../../../../mnt/d2/home/amd/Dropbox/work/elisp/emacslib/haml-mode.el
 
 (autoload 'haml-mode "haml-mode" "\
@@ -577,12 +577,12 @@ HTMLize dired-marked files.
 
 ;;;***
 
-;;;### (autoloads (js2-mode) "js2" "../../../../../../mnt/d2/home/amd/Dropbox/work/elisp/emacslib/js2.el"
-;;;;;;  (19755 25076))
-;;; Generated autoloads from ../../../../../../mnt/d2/home/amd/Dropbox/work/elisp/emacslib/js2.el
+;;;### (autoloads (js2-mode) "js2-mode" "../../../../../../mnt/d2/home/amd/Dropbox/work/elisp/emacslib/js2-mode.el"
+;;;;;;  (20376 20302))
+;;; Generated autoloads from ../../../../../../mnt/d2/home/amd/Dropbox/work/elisp/emacslib/js2-mode.el
  (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
-(autoload 'js2-mode "js2" "\
+(autoload 'js2-mode "js2-mode" "\
 Major mode for editing JavaScript code.
 
 \(fn)" t nil)
@@ -623,18 +623,23 @@ Major mode for editing PHP code.
 ;;;***
 
 ;;;### (autoloads (ruby-mode) "ruby-mode" "../../../../../../mnt/d2/home/amd/Dropbox/work/elisp/emacslib/ruby/ruby-mode.el"
-;;;;;;  (19530 3684))
+;;;;;;  (20262 2475))
 ;;; Generated autoloads from ../../../../../../mnt/d2/home/amd/Dropbox/work/elisp/emacslib/ruby/ruby-mode.el
 
 (autoload 'ruby-mode "ruby-mode" "\
-Major mode for editing ruby scripts.
-\\[ruby-indent-command] properly indents subexpressions of multi-line
+Major mode for editing Ruby scripts.
+\\[ruby-indent-line] properly indents subexpressions of multi-line
 class, module, def, if, while, for, do, and case statements, taking
 nesting into account.
 
-The variable ruby-indent-level controls the amount of indentation.
+The variable `ruby-indent-level' controls the amount of indentation.
+
 \\{ruby-mode-map}
 
 \(fn)" t nil)
+
+(add-to-list 'auto-mode-alist (cons (purecopy "\\.rb\\'") 'ruby-mode))
+
+(dolist (name (list "ruby" "rbx" "jruby" "ruby1.9" "ruby1.8")) (add-to-list 'interpreter-mode-alist (cons (purecopy name) 'ruby-mode)))
 
 ;;;***
