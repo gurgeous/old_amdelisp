@@ -656,7 +656,19 @@ column point starts at, `tab-to-tab-stop' is done instead."
   (setq haml-backspace-backdents-nesting nil)
   (modify-syntax-entry ?_ "." haml-mode-syntax-table))  
 (eval-after-load "haml-mode"
-  '(add-hook 'haml-mode-hook 'my-haml-setup))
+  '(progn
+     (add-hook 'haml-mode-hook 'my-haml-setup)
+     ;; amd - this is the old version, which seems to work better
+     (defun haml-reindent-region-by (n)
+       "Add N spaces to the beginning of each line in the region.
+If N is negative, will remove the spaces instead.  Assumes all
+lines in the region have indentation >= that of the first line."
+       (let ((ci (current-indentation)))
+         (save-excursion
+           (replace-regexp (concat "^" (make-string ci ? ))
+                           (make-string (max 0 (+ ci n)) ? )
+                           nil (point) (mark)))))
+     ))
 
 (setq auto-mode-alist (cons '("\\.haml$" . haml-mode) auto-mode-alist))
 (autoload 'haml-mode "haml-mode" "Haml editing mode." t)
