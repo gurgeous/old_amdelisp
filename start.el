@@ -30,6 +30,7 @@
 (when window-system
   (load "window"))
 (load "prefs")
+(load "patches")
 (load (format "%s/lisp/loaddefs" AMDELISP))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
