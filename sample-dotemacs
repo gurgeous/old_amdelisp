@@ -77,10 +77,6 @@
     (setq global-auto-revert-ignore-buffer t)))
 (add-hook 'find-file-hooks 'turn-off-auto-revert-hook)
 
-; at midnight, kill buffers that haven't been used in 5 days
-(require 'midnight)
-(setq clean-buffer-list-delay-general 5)
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; random settings
@@ -93,21 +89,11 @@
  tags-add-tables t
  )
 
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; functions
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defun switch-to-buffer-nocreate ()
-  "Switch to a buffer but don't create one if it doesn't exist."
-  (interactive)
-  (switch-to-buffer (read-buffer "Switch to buffer " (other-buffer) "t")))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; keys
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(global-set-key [f3]  'vc-diff)
 (global-set-key [f7]  'abtags-find-file)
 (global-set-key [f8]  'grep)
 (global-set-key [f12] 'next-error)

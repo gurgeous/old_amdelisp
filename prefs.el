@@ -116,32 +116,10 @@
 (global-set-key "\C-x\C-s"  'save-buffer)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; p4/csc 
-
-;;(global-set-key [f1]      'p4-edit)
-(global-set-key [f3]        'vc-diff)
-;;(global-set-key "\C-xp"         'p4-prefix-map)
-;;(global-set-key "\C-x\C-q"      'p4-toggle-read-only)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; compilation
 
 (global-set-key [M-up]      'previous-error)
 (global-set-key [M-down]    'next-error)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; java/cpp
-
-(global-set-key-override "\C-cr"    'repackage  'java-mode)
-(global-set-key-override "\C-c\C-r" 'repackage  'java-mode)
-(global-set-key-override "\C-cj"    'jdok-generate-javadoc-template 'java-mode)
-(global-set-key-override "\C-c\C-j" 'jdok-generate-javadoc-template 'java-mode)
-(global-set-key-override "\C-ct"    'java-trace-method 'java-mode)
-(global-set-key-override "\C-c\C-t" 'java-trace-method 'java-mode)
-(global-set-key-override "\C-cp"    'java-trace-ctor 'java-mode)
-(global-set-key-override "\C-c\C-p" 'java-trace-ctor 'java-mode)
-(global-set-key-override "\C-ct"    'cpp-trace-method 'c++-mode)
-(global-set-key-override "\C-c\C-t" 'cpp-trace-method 'c++-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; shell
@@ -153,6 +131,12 @@
 ;;; imenu
 (when window-system
   (global-set-key [C-down-mouse-3] 'imenu))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; uniquify
+
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'forward)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; abtags

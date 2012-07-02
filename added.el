@@ -313,3 +313,11 @@ If the region is not active, activate the current line."
                  (string-match regexp file-name))
         (message "Killing %s" file-name)
         (kill-buffer buffer)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; switch-to-buffer, but don't create
+
+(defun switch-to-buffer-nocreate ()
+  "Switch to a buffer but don't create one if it doesn't exist."
+  (interactive)
+  (switch-to-buffer (read-buffer "Switch to buffer " (other-buffer) "t")))

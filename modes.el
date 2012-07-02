@@ -593,6 +593,8 @@ column point starts at, `tab-to-tab-stop' is done instead."
 (eval-when-compile (require 'ruby-mode)
                    (require 'ruby-electric))
 
+(autoload 'rdebug "rdebug" "ruby-debug interface" t)
+
 (defun my-ruby-setup ()
   (setq indent-tabs-mode nil)
   (setq ruby-insert-encoding-magic-comment nil)
@@ -721,3 +723,50 @@ column point starts at, `tab-to-tab-stop' is done instead."
 
 (eval-after-load "grep"
   '(grep-apply-setting 'grep-command "grep -nH -i "))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ido
+
+(eval-when-compile (require 'ido))
+(eval-after-load "ido"
+  '(progn
+     (defun abtags-find-file-with-ido ()
+       "Prompts the user to select a filename from among those in the tags file.
+    Visits the selected file."
+       (interactive)
+       (abtags-refresh-cache)
+       (find-file
+        (cdr (assoc
+              (ido-completing-read "Find file: " abtags-cache nil t)
+              abtags-cache))))
+
+     (defun my-ido-setup ()
+       (global-set-key "\C-x\C-b" 'ido-switch-buffer)
+       (global-set-key "\C-xb" 'ido-switch-buffer)
+       (setq
+        ido-case-fold t
+        ido-confirm-unique-completion t
+        ido-enable-flex-matching t
+        ido-enable-tramp-completion nil
+        ido-ignore-buffers '("\\` " "^\*")
+        )
+       (require 'abtags)
+       (defalias 'abtags-find-file 'abtags-find-file-with-ido))
+     
+     (ido-mode 'buffer)
+     (my-ido-setup)
+     ))     
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; warnings
+
+(eval-after-load "warnings"
+  '(add-to-list 'warning-suppress-types '(undo discard-info)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; midnight
+;; kill buffers that haven't been used in 5 days
+;;
+
+(require 'midnight)
+(setq clean-buffer-list-delay-general 5)
