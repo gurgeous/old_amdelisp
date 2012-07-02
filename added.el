@@ -73,10 +73,12 @@
 (defun tags-search-tags-table ()
   "Walk directories, looking for a TAGS file. If we find one, visit it."
   (interactive)
-  (let ((tags (find-in-path (concat default-directory "gub") "TAGS")))
+  (let ((tags (locate-dominating-file (concat default-directory "gub") "TAGS")))
     (if tags
         (progn
           (visit-tags-table tags)
+          (if (functionp 'ffip-clear-project-cache)            
+              (ffip-clear-project-cache))
           (message "Loaded %s." tags))
       (error "Could not find TAGS in current path."))))
 
