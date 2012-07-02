@@ -1,28 +1,4 @@
 
-;;;### (autoloads (abtags-find-include abtags-find-next-file abtags-find-file)
-;;;;;;  "abtags" "../../../../../../mnt/d2/home/amd/Dropbox/work/elisp/abtags.el"
-;;;;;;  (18801 4854))
-;;; Generated autoloads from ../../../../../../mnt/d2/home/amd/Dropbox/work/elisp/abtags.el
-
-(autoload 'abtags-find-file "abtags" "\
-Prompts the user to select a filename from among those in the tags file.
-   Visits the selected file.
-
-\(fn)" t nil)
-
-(autoload 'abtags-find-next-file "abtags" "\
-Prompts the user to select a filename from among those in the tags file.
-   Visits the selected file.
-
-\(fn)" t nil)
-
-(autoload 'abtags-find-include "abtags" "\
-Follow a #include statement.
-
-\(fn)" t nil)
-
-;;;***
-
 ;;;### (autoloads (ascii-off ascii-on ascii-display ascii-customize)
 ;;;;;;  "ascii" "../../../../../../mnt/d2/home/amd/Dropbox/work/elisp/emacslib/ascii.el"
 ;;;;;;  (19755 24096))
@@ -479,8 +455,23 @@ Not documented
 
 ;;;***
 
+;;;### (autoloads (find-file-in-project) "find-file-in-project" "../../../../../../mnt/d2/home/amd/Dropbox/work/elisp/emacslib/find-file-in-project.el"
+;;;;;;  (20466 2414))
+;;; Generated autoloads from ../../../../../../mnt/d2/home/amd/Dropbox/work/elisp/emacslib/find-file-in-project.el
+
+(autoload 'find-file-in-project "find-file-in-project" "\
+Prompt with a completing list of all files in the project to find one.
+
+The project's scope is defined as the first directory containing
+an `.emacs-project' file. You can override this by locally
+setting the `ffip-project-root' variable.
+
+\(fn)" t nil)
+
+;;;***
+
 ;;;### (autoloads (haml-mode) "haml-mode" "../../../../../../mnt/d2/home/amd/Dropbox/work/elisp/emacslib/haml-mode.el"
-;;;;;;  (20360 30858))
+;;;;;;  (20411 48606))
 ;;; Generated autoloads from ../../../../../../mnt/d2/home/amd/Dropbox/work/elisp/emacslib/haml-mode.el
 
 (autoload 'haml-mode "haml-mode" "\

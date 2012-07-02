@@ -262,3 +262,36 @@ This is an internal function used by Auto-Revert Mode."
           (+ indent ruby-indent-level)
         indent))))
 )
+
+
+;;
+;; Change find-file-in-project so that it sets project-root whenever
+;; it opens a file. That way we can use TAGS files that include files
+;; outside the root. For example, the TAGS file for a Rails app can
+;; include the gems used by that app. I use this a lot.
+;; 
+
+(eval-when-compile (require 'find-file-in-project))
+(eval-after-load "find-file-in-project"
+  '(defun find-file-in-project ()
+     "Prompt with a completing list of all files in the project to find one.
+
+The project's scope is defined as the first directory containing
+an `.emacs-project' file. You can override this by locally
+setting the `ffip-project-root' variable."
+     (interactive)
+     (let* (
+            (project-files-map (ffip-project-files-map))
+            (project-file-names (ffip-map-keys project-files-map))
+            (file-name (ffip-completing-read "Find file in project: " project-file-names))
+            (file-paths (gethash file-name project-files-map))
+            (file-path (if (> (length file-paths) 1)
+                           (ffip-completing-read "Disambiguate: " file-paths)
+                         (car file-paths)))
+            ;; amd - save this for later
+            (project-root (ffip-project-root)))
+       (find-file file-path)
+       ;; amd - remember the root
+       (make-local-variable 'ffip-project-root)
+       (setq ffip-project-root project-root)))
+  )

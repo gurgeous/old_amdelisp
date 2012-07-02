@@ -74,7 +74,6 @@
 (global-set-key [C-backspace]   'backward-kill-word)
 (global-set-key [C-kp-right]    'indent-for-tab-command)
 (global-set-key [C-right]       'indent-for-tab-command)
-(global-set-key [C-tab]         'abtags-find-next-file)
 
 ;; mini-buffer
 (define-key minibuffer-local-map "\t" 'hippie-expand)
@@ -137,18 +136,6 @@
 
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; abtags
-
-;; A helper to set M-z to abtags after the .emacs file has loaded, if
-;; the user doesn't specifically set abtags-keymap-prefix to nil.
-(defun abtags-maybe-set-key ()
-  (if (not (boundp 'abtags-keymap-prefix))
-      (setq abtags-keymap-prefix "\M-z"))
-  (if (not (null abtags-keymap-prefix))
-      (global-set-key abtags-keymap-prefix 'abtags-key-map)))
-(add-hook 'after-init-hook 'abtags-maybe-set-key)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Window specific settings.

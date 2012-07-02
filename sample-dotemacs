@@ -77,6 +77,11 @@
     (setq global-auto-revert-ignore-buffer t)))
 (add-hook 'find-file-hooks 'turn-off-auto-revert-hook)
 
+; no tramp, please
+(setq tramp-mode nil)
+
+; turn on ido
+(require 'ido)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; random settings
@@ -94,13 +99,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (global-set-key [f3]  'vc-diff)
-(global-set-key [f7]  'abtags-find-file)
+(global-set-key [f7] 'find-file-in-project)
 (global-set-key [f8]  'grep)
 (global-set-key [f12] 'next-error)
-(global-set-key "\C-xb" 'switch-to-buffer-nocreate)
 (global-set-key "\C-\M-q" 'backward-up-list-indent)
 (global-set-key "\M-," 'tags-search-tags-table)
 
 ;; use TAB key for completion everywhere
 (global-set-key-override0 "\t" 'clever-hippie-tab)
 (global-set-key-override  "\t" 'clever-nxml-tab 'nxml-mode)
+
+

@@ -539,11 +539,6 @@ column point starts at, `tab-to-tab-stop' is done instead."
   'shell-script-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; abtags
-
-(autoload 'abtags-key-map "abtags" "abtags-key-map" nil `keymap)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; xml
 
 (eval-when-compile (require 'nxml-mode))
@@ -730,16 +725,6 @@ column point starts at, `tab-to-tab-stop' is done instead."
 (eval-when-compile (require 'ido))
 (eval-after-load "ido"
   '(progn
-     (defun abtags-find-file-with-ido ()
-       "Prompts the user to select a filename from among those in the tags file.
-    Visits the selected file."
-       (interactive)
-       (abtags-refresh-cache)
-       (find-file
-        (cdr (assoc
-              (ido-completing-read "Find file: " abtags-cache nil t)
-              abtags-cache))))
-
      (defun my-ido-setup ()
        (global-set-key "\C-x\C-b" 'ido-switch-buffer)
        (global-set-key "\C-xb" 'ido-switch-buffer)
@@ -749,13 +734,11 @@ column point starts at, `tab-to-tab-stop' is done instead."
         ido-enable-flex-matching t
         ido-enable-tramp-completion nil
         ido-ignore-buffers '("\\` " "^\*")
-        )
-       (require 'abtags)
-       (defalias 'abtags-find-file 'abtags-find-file-with-ido))
+        ))
      
      (ido-mode 'buffer)
      (my-ido-setup)
-     ))     
+     ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; warnings
@@ -765,8 +748,9 @@ column point starts at, `tab-to-tab-stop' is done instead."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; midnight
-;; kill buffers that haven't been used in 5 days
-;;
 
 (require 'midnight)
+; kill buffers that haven't been used in 5 days
 (setq clean-buffer-list-delay-general 5)
+
+
