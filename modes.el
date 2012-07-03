@@ -1,5 +1,4 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;; mode defaults ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; etags
 
@@ -753,4 +752,11 @@ column point starts at, `tab-to-tab-stop' is done instead."
 ; kill buffers that haven't been used in 5 days
 (setq clean-buffer-list-delay-general 5)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; midnight
 
+(eval-after-load "go-mode"
+  '(defadvice go-mode (after go-mode-after activate)
+     "Set tab-width to 2"
+     (setq tab-width 2)
+     ))

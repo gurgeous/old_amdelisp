@@ -260,9 +260,10 @@
                             (expand-file-name "lisp"
                                               source-directory))))
     (save-excursion
-      (message "rebuild-autoload : %s" autoloads-file)
       (set-buffer (find-file-noselect autoloads-file))
+      (delete-region (point-min) (point-max))
       (rebuild-autoloads-dir source-directory)
+      (save-buffer)
       (message "rebuild-autoload : %s - Done." autoloads-file))))
  
 (provide 'added)
