@@ -10,8 +10,6 @@
       backup-by-copying t
       comint-input-ring-size 99      
       completion-ignore-case t
-      default-major-mode 'text-mode
-      default-tab-width 4
       display-time-format nil
       file-name-buffer-file-type-alist '(("\\.cgi$" . t))
       fill-column 60
@@ -24,12 +22,14 @@
       line-move-visual nil
       line-number-display-limit 3000000
       line-number-display-limit-width 4000
+      major-mode 'text-mode
       message-log-max 200
       PC-word-delimiters "-_.="
-      read-file-name-completion-ignore-case t
       read-buffer-completion-ignore-case t
+      read-file-name-completion-ignore-case t
       save-abbrevs nil
       speedbar-track-mouse-flag nil
+      tab-width 4
       track-eol nil
       truncate-partial-width-windows nil
       w32-use-full-screen-buffer nil
@@ -56,11 +56,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; editing
-
-;; philbo says these are not helpful
-;; (when (not is-win32)
-;;   (keyboard-translate ?\C-h ?\C-?))
-;; (global-set-key-override "\177" 'backward-delete-char-untabify)
 
 (global-set-key "\C-\\"     'advertised-undo)
 (global-set-key "\C-c\C-c"      'comment-region)  
@@ -95,16 +90,6 @@
 (global-set-key [C-kp-up]       'previous-line)
 (global-set-key [C-kp-down]     'next-line)
 (global-set-key [C-kp-left]     'backward-word)
-;; (global-set-key "\C-v"       'pager-page-down)
-;; (global-set-key "\M-v"       'pager-page-up)
-;; (global-set-key [next]       'pager-page-down)
-;; (global-set-key [prior]      'pager-page-up)
-
-;; these are turned off because some people use them to reindent a
-;; line - see indent-for-tab-command above
-;;
-;;(global-set-key [C-right]     'forward-word)
-;;(global-set-key [C-kp-right]  'forward-word)
  
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; mistakes
@@ -174,87 +159,3 @@
   (setq font-lock-verbose 2048)
   (setq font-lock-maximum-decoration t)
   (global-font-lock-mode t))
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; amd's color theme - turned off by default
-
-(defun color-theme-amd ()
-  (color-theme-install
-   '(color-theme-amd
-     (;(background-color . "black")
-      (foreground-color . "white")
-      (cursor-color     . "yellow")
-      (background-mode  . dark))
-     
-     (default      ((t (nil))))
-     (fringe       ((t (                    :background "grey20"))))
-     (modeline     ((t (:foreground "white" :background "darkslateblue"))))
-     (region       ((t (                    :background "midnight blue"))))
-     (highlight    ((t (                    :background "#13385b"))))
-     
-     (minibuffer-prompt            ((t (:foreground "gold" :bold t))))
-     
-     (font-lock-builtin-face       ((t (:foreground "cornflower blue"))))
-     (font-lock-comment-face       ((t (:foreground "green"))))
-     (font-lock-doc-face           ((t (:foreground "green"))))
-     (font-lock-constant-face      ((t (:foreground "gold"))))
-     (font-lock-function-name-face ((t (:foreground "goldenrod" :bold t))))
-     (font-lock-keyword-face       ((t (:foreground "DeepSkyBlue1"))))
-     (font-lock-string-face        ((t (:foreground "red"))))
-     (font-lock-type-face          ((t (:foreground "CadetBlue1" :bold t))))
-     (font-lock-variable-name-face ((t (:foreground "SeaGreen2"))))
-     (font-lock-warning-face       ((t (:foreground "Pink"))))
-
-     ))
-  (set-face-foreground 'mode-line "white")
-  (set-face-background 'mode-line "darkslateblue"))
-
-(defun color-theme-amd-win32 ()
-  (color-theme-amd)
-  (let ((color-theme-is-cumulative t))  
-    (color-theme-install
-     '(color-theme-amd-win32
-       nil
-       nil
-       (font-lock-keyword-face       ((t (:foreground "cornflower blue"))))
-       (font-lock-string-face        ((t (:foreground "tomato"))))
-       (font-lock-warning-face       ((t (:foreground "cornflower blue"))))
-       ))))
-
-(defun color-theme-amd-linux ()
-  (color-theme-amd)
-  (let ((color-theme-is-cumulative t))  
-    (color-theme-install
-     '(color-theme-amd-win32
-       ((background-color . "black"))
-       nil
-       (font-lock-string-face        ((t (:foreground "tomato"))))
-       ))))
-
-(defun color-theme-amd-linux-nw ()
-  (color-theme-amd)
-  (let ((color-theme-is-cumulative t))  
-    (color-theme-install
-     '(color-theme-amd-win32
-       nil
-       nil
-       (font-lock-function-name-face ((t (:bold nil))))
-       (font-lock-type-face          ((t (:foreground "cyan" :bold nil))))
-       ))))
-
-(defun turn-on-color-theme-amd ()
-  "Turn on amd's colors."
-  (interactive)
-  (when (or window-system (not is-win32))
-    (require 'color-theme)
-    (cond
-     (is-win32      (color-theme-amd-win32))
-     (window-system (color-theme-amd-linux))
-     (t             (color-theme-amd-linux-nw)))))
-
-(defun color-theme-solarized-nw ()
-  (let ((color-theme-is-cumulative t))  
-    (color-theme-install
-     '(color-theme-solarized-dark
-       ((background-color . "black"))))))

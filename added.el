@@ -245,7 +245,7 @@
       (cond
                                         ; ignore some files
        ((or (member file excludes)
-            (string-match "loaddefs.el$" file)))
+            (string-match "autoloads.el$" file)))
        ((file-directory-p path) (rebuild-autoloads-dir path))
        ((string-match ".el$" file)
         (message "generate-file-autoloads(%s)..." file)
@@ -255,16 +255,13 @@
   (interactive)
   (require 'autoload)
   (let* ((source-directory AMDELISP)
-         (autoloads-file
-          (expand-file-name generated-autoload-file
-                            (expand-file-name "lisp"
-                                              source-directory))))
+         (autoloads (format "%s/autoloads.el" source-directory)))
     (save-excursion
-      (set-buffer (find-file-noselect autoloads-file))
+      (set-buffer (find-file-noselect autoloads))
       (delete-region (point-min) (point-max))
       (rebuild-autoloads-dir source-directory)
       (save-buffer)
-      (message "rebuild-autoload : %s - Done." autoloads-file))))
+      (message "rebuild-autoload : %s - Done." autoloads))))
  
 (provide 'added)
 

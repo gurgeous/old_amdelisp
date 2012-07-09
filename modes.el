@@ -27,13 +27,6 @@
 (font-lock-add-keywords 'compilation-mode compilation-added-font-lock-keywords)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; filladapt mode
-
-(require 'filladapt)
-(setq filladapt-mode-line-string nil)
-(setq-default filladapt-mode t)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; c/cc/java mode
 
 ;; shared
@@ -584,8 +577,7 @@ column point starts at, `tab-to-tab-stop' is done instead."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ruby mode
 
-(eval-when-compile (require 'ruby-mode)
-                   (require 'ruby-electric))
+(eval-when-compile (require 'ruby-mode))
 
 (autoload 'rdebug "rdebug" "ruby-debug interface" t)
 
@@ -593,8 +585,6 @@ column point starts at, `tab-to-tab-stop' is done instead."
   (setq indent-tabs-mode nil)
   (setq ruby-insert-encoding-magic-comment nil)
   (define-key ruby-mode-map "\C-m" 'newline-and-indent))
-;  (require 'ruby-electric)
-;  (ruby-electric-mode))
 (add-hook 'ruby-mode-hook 'my-ruby-setup)
 
 (defvar ruby-added-font-lock-keywords nil)

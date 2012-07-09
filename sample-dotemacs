@@ -28,10 +28,35 @@
 ;; look and feel
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; my colors, defined in prefs.el
-(if window-system
-    (color-theme-solarized-dark)
-  (color-theme-solarized-nw))
+;; color theme
+
+(load "solarized-theme")
+(load-theme 'solarized-dark t)
+
+(let ((class '((class color) (min-colors 89)))
+      (yellow    "#b58900")
+      (orange    "#cb4b16")
+      (red       "#dc322f")
+      (magenta   "#d33682")
+      (violet    "#6c71c4")
+      (blue      "#268bd2")
+      (cyan      "#2aa198")
+      (green     "#859900")
+      (yellow-l  "#DEB542"))
+  (custom-theme-set-faces
+   'user
+   `(cursor ((,class (:background ,yellow-l))))
+   `(font-lock-constant-face ((,class (:foreground ,cyan :weight bold))))
+   `(font-lock-function-name-face ((,class (:foreground ,yellow))))
+   `(font-lock-keyword-face ((,class (:foreground ,blue :weight bold))))
+   `(font-lock-string-face ((,class (:foreground ,red))))
+   `(font-lock-type-face ((,class (:foreground ,orange))))
+   ))
+
+(when (not window-system)
+  (set-background-color "black")
+  (set-face-background 'default "black")
+  (set-face-background 'region "black"))
   
 ;; put the window on the right, make it 87 columns wide. Also, enable
 ;; the mouse wheel.
@@ -42,9 +67,6 @@
 
   (when is-win32
     (setq my-font (window-build-font "Andale" 10)))
-  
-  ;;  (setq my-font (window-build-font "Hells Programmer" 8))
-  ;;  (setq my-font (window-build-font "Sheldon Narrow" 8))
 
   ;; highlight line-mode
   (global-hl-line-mode)
@@ -62,10 +84,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; modes
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(require 'complete)
-(partial-completion-mode t)
 
 ;; turn on global-auto-revert-mode
 (global-auto-revert-mode 1)
@@ -85,7 +103,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; random settings
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (setq
  abtags-keymap-prefix nil
@@ -96,7 +113,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; keys
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (global-set-key [f3]  'vc-diff)
 (global-set-key [f7] 'find-file-in-project)
@@ -108,5 +124,3 @@
 ;; use TAB key for completion everywhere
 (global-set-key-override0 "\t" 'clever-hippie-tab)
 (global-set-key-override  "\t" 'clever-nxml-tab 'nxml-mode)
-
-
