@@ -1,17 +1,21 @@
-;;;
-;;; Emacs preferences file - contains personal preferences.
-;;; copy this into your ~/.emacs to personalize.
-;;;
+;;
+;; Emacs preferences file - contains personal preferences.
+;; copy this into your ~/.emacs to personalize.
+;;
 
 
 ;; you probably don't care about these
 (setq auto-revert-interval 2
       auto-save-list-file-prefix nil
       backup-by-copying t
+      backup-inhibited t
+      backward-delete-char-untabify-method 'hungry
+      column-number-mode t
       comint-input-ring-size 99      
       completion-ignore-case t
-      file-name-buffer-file-type-alist '(("\\.cgi$" . t))
       fill-column 60
+      font-lock-maximum-decoration t
+      font-lock-verbose 2048
       gc-cons-threshold 200000
       inhibit-startup-message t
       initial-scratch-message nil
@@ -21,39 +25,58 @@
       line-move-visual nil
       line-number-display-limit 3000000
       line-number-display-limit-width 4000
+      line-number-mode t
       major-mode 'text-mode
       message-log-max 200
+      mouse-wheel-mode t
       PC-word-delimiters "-_.="
       read-buffer-completion-ignore-case t
       read-file-name-completion-ignore-case t
+      require-final-newline nil
       save-abbrevs nil
+      scroll-bar-mode nil
       speedbar-track-mouse-flag nil
       tab-width 4
       track-eol nil
       truncate-partial-width-windows nil
+      visible-bell t
       w32-use-full-screen-buffer nil
       x-select-enable-clipboard t)
+
+;; what's the clipboard format?
 (set-clipboard-coding-system 'utf-8)
+
+;; turn off auto-raise
+(add-to-list 'default-frame-alist '(auto-raise . nil))
+
+;; frame title
+(setq frame-title-format "Emacs - %f")
 
 ;; cleanup make output
 (setenv "TERM" "emacs")
 
-;; you might want to customize these
-(setq backup-inhibited t
-      backward-delete-char-untabify-method 'hungry
-      column-number-mode t
-      line-number-mode t
-      require-final-newline nil)
+;; quiet, please
+(setq ring-bell-function (function (lambda ())))
 
+;; tabs
 (set-default 'indent-tabs-mode nil)
 (set-default 'tab-width 4)
 
+;; turn on some disabled stuff that we like
+(put 'downcase-region 'disabled nil)
 (put 'eval-expression 'disabled nil)
 (put 'upcase-region   'disabled nil)
-(put 'downcase-region 'disabled nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; editing
+;; window chrome
+
+(global-font-lock-mode t)
+(menu-bar-mode 0)
+(tool-bar-mode 0)
+(transient-mark-mode 0)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; keys
 
 (global-set-key "\C-\\"       'advertised-undo)
 (global-set-key "\C-c\C-c"    'comment-region)  
@@ -70,9 +93,7 @@
 (define-key minibuffer-local-must-match-map "\t" 'minibuffer-complete)
 (define-key minibuffer-local-filename-completion-map "\t" 'minibuffer-complete)
    
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; movement
-
+;; movement
 (global-set-key "\M-z"          'pager-row-up)
 (global-set-key "\C-z"          'pager-row-down)
 (global-set-key [home]          'beginning-of-line)
@@ -86,59 +107,12 @@
 (global-set-key [C-kp-down]     'next-line)
 (global-set-key [C-kp-left]     'backward-word)
  
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; mistakes
+;; mistakes
+(global-set-key "\C-xf"         'find-file) 
+(global-set-key "\C-x\C-f"      'find-file)
+(global-set-key "\C-xs"         'save-buffer)
+(global-set-key "\C-x\C-s"      'save-buffer)
 
-(global-set-key "\C-xf"     'find-file) 
-(global-set-key "\C-x\C-f"  'find-file)
-(global-set-key "\C-xs"     'save-buffer)
-(global-set-key "\C-x\C-s"  'save-buffer)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; compilation
-
+;; compilation
 (global-set-key [M-up]      'previous-error)
 (global-set-key [M-down]    'next-error)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; shell
-
-; REMIND: move these into modes.el
-;; (global-set-key-override "\t" 'comint-dynamic-complete 'shell-mode)
-;; (global-set-key-override "\C-c\C-c" 'comint-interrupt-subjob 'shell-mode)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; imenu
-
-(when window-system
-  (global-set-key [C-down-mouse-3] 'imenu))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; uniquify
-
-(require 'uniquify)
-(setq uniquify-buffer-name-style 'forward)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Window specific settings.
-
-(setq ring-bell-function (function (lambda ())))
-
-(when window-system
-  (blink-cursor-mode 1)
-  (set-scroll-bar-mode nil)
-  (setq mouse-wheel-mode t
-        visible-bell t)
-  (tool-bar-mode 0)
-  (transient-mark-mode 0)
-
-  (add-to-list 'default-frame-alist '(auto-raise . nil))
-  (add-to-list 'default-frame-alist '(scroll-bar-width . 12))
-
-  ;; frame title
-  (setq frame-title-format "Emacs - %f"))
-
-(when (or window-system (not is-win32))
-  (setq font-lock-verbose 2048)
-  (setq font-lock-maximum-decoration t)
-  (global-font-lock-mode t))

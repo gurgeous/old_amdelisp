@@ -23,7 +23,7 @@
 ;(setq source-directory (if is-win32 (getenv "emacs_dir") "/usr/share/emacs"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Packages
+;; Packages
 
 (package-initialize)
 
@@ -49,19 +49,17 @@
         (package-install i)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Preload stuff.
+;; Preload stuff.
 
 (load "added")
 (load "modes")
-(when window-system
-  (load "window"))
 (load "prefs")
-(load "patches")
 (load "autoloads")
+(load "patches")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Inhibit-startup-message is reset to nil right after this file
-;;; is loaded, so we have to add an after-init-hook to reset it.
+;; Inhibit-startup-message is reset to nil right after this file
+;; is loaded, so we have to add an after-init-hook to reset it.
 
 (if inhibit-startup-message
     (add-hook 'after-init-hook (lambda () (setq inhibit-startup-message t))))

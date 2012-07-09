@@ -6,8 +6,7 @@
 (setq tags-revert-without-query t)
 (defun my-etags-setup ()
   (setq case-fold-search nil))
-(eval-after-load "etags"
-  '(add-hook 'tags-table-format-hooks 'my-etags-setup))
+(add-hook 'tags-table-format-hooks 'my-etags-setup)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; compile
@@ -119,8 +118,7 @@
 (defun my-csharp-mode ()
   (setq indent-tabs-mode nil)  
   (local-set-key (kbd "{") 'c-electric-brace))
-(eval-after-load "csharp-mode"
-  '(add-hook 'csharp-mode-hook 'my-csharp-mode))
+(add-hook 'csharp-mode-hook 'my-csharp-mode)
 (setq csharp-want-flymake-fixup nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -164,9 +162,6 @@
   (define-key python-mode-map [backspace] 'py-electric-backspace))
  (add-hook 'python-mode-hook 'my-python-setup)
  (autoload 'python-mode "python-mode" "Python editing mode." t)
-(add-to-list 'interpreter-mode-alist '("python" . python-mode))
-(add-to-list 'interpreter-mode-alist '("python2" . python-mode))
-(add-to-list 'auto-mode-alist '("\\.py$" . python-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; makefile
@@ -191,8 +186,7 @@
   (setq css-indent-offset 2)
   (rainbow-turn-on)
   )
-(eval-after-load "css-mode"
-  '(add-hook 'css-mode-hook 'my-css-setup))
+(add-hook 'css-mode-hook 'my-css-setup)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; scss
@@ -230,8 +224,7 @@
   ;; (setq standard-indent 2)
   (define-key js2-mode-map [C-left] 'my-decrease)  
   (define-key js2-mode-map [C-right] 'my-increase))
-(eval-after-load "js2-mode"
-  '(add-hook 'js2-mode-hook 'my-js2-setup))
+(add-hook 'js2-mode-hook 'my-js2-setup)
 
 ;; coffee
 (eval-when-compile (require 'coffee-mode))
@@ -245,14 +238,7 @@
   (define-key coffee-mode-map [C-left] 'my-decrease)  
   (define-key coffee-mode-map [C-right] 'my-increase)
   )  
-(eval-after-load "coffee-mode"
-  '(add-hook 'coffee-mode-hook 'my-coffee-setup))
-(add-to-list 'auto-mode-alist '("\\.coffee" . coffee-mode))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; php
-
-(add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
+(add-hook 'coffee-mode-hook 'my-coffee-setup)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; sql
@@ -371,15 +357,15 @@
   (setq comint-scroll-to-bottom-on-output t)
   (my-sql-send-file (format "%s/default.sql" (getenv "HOME"))))
 
-(eval-after-load "sql"
-  '(progn
-     (add-hook 'sql-mode-hook 'my-sql-setup)
-     (add-hook 'sql-interactive-mode-hook 'my-sql-interactive-setup)))
-
+(add-hook 'sql-mode-hook 'my-sql-setup)
+(add-hook 'sql-interactive-mode-hook 'my-sql-interactive-setup)
 (add-to-list 'auto-mode-alist '("\\.ddl$" . sql-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; imenu
+
+(when window-system
+  (global-set-key [C-down-mouse-3] 'imenu))
 
 (setq imenu-sort-function 'imenu--sort-by-name)
 
@@ -470,6 +456,12 @@
   'shell-script-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; shell-mode (REMIND)
+
+;; (global-set-key-override "\t" 'comint-dynamic-complete 'shell-mode)
+;; (global-set-key-override "\C-c\C-c" 'comint-interrupt-subjob 'shell-mode)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; xml
 
 (eval-when-compile (require 'nxml-mode))
@@ -478,10 +470,9 @@
   (modify-syntax-entry ?& "w")  
   (setq nxml-child-indent 2)
   (setq nxml-slash-auto-complete-flag t))
-(eval-after-load "nxml-mode"
-  '(add-hook 'nxml-mode-hook 'my-nxml-setup))
+(add-hook 'nxml-mode-hook 'my-nxml-setup)
 
-(defun clever-nxml-tab (arg)
+(defun my-nxml-tab (arg)
   "Tab that either indents or nxml completes."
   (interactive "*P")
   (cond
@@ -538,11 +529,9 @@
            (cons (concat "\\<" commands "\\>") 'font-lock-keyword-face)))
     (font-lock-add-keywords 'ruby-mode ruby-added-font-lock-keywords)))
 
-(add-to-list 'auto-mode-alist '("\\.rb\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist '("/\\(Rake\\|Gem\\|Cap\\|Tel\\)file$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.\\(rake\\|rxml\\|pill\\|irbrc\\|Rules\\)\\'$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.\\(sinew\\|gemspec\\|builder\\)$" . ruby-mode))
-(add-to-list 'interpreter-mode-alist '("ruby" . ruby-mode))
 
 (define-generic-mode 'yaml-mode
   (list ?\#)
@@ -580,20 +569,7 @@
   (define-key haml-mode-map [C-right] 'my-increase)
   (setq haml-backspace-backdents-nesting nil)
   (modify-syntax-entry ?_ "." haml-mode-syntax-table))  
-(eval-after-load "haml-mode"
-  '(progn
-     (add-hook 'haml-mode-hook 'my-haml-setup)
-     ;; amd - this is the old version, which seems to work better
-;;      (defun haml-reindent-region-by (n)
-;;        "Add N spaces to the beginning of each line in the region.
-;; If N is negative, will remove the spaces instead.  Assumes all
-;; lines in the region have indentation >= that of the first line."
-;;        (let ((ci (current-indentation)))
-;;          (save-excursion
-;;            (replace-regexp (concat "^" (make-string ci ? ))
-;;                            (make-string (max 0 (+ ci n)) ? )
-;;                            nil (point) (mark)))))
-     ))
+(add-hook 'haml-mode-hook 'my-haml-setup)
 
 (setq auto-mode-alist (cons '("\\.haml$" . haml-mode) auto-mode-alist))
 (autoload 'haml-mode "haml-mode" "Haml editing mode." t)
@@ -606,8 +582,7 @@
   (define-key sh-mode-map "\C-c\C-c" 'comment-region)
   (define-key sh-mode-map "\C-c\C-u" 'uncomment-region)
   (setq sh-basic-offset 2))
-(eval-after-load "sh-script"
-  '(add-hook 'sh-mode-hook 'my-sh-setup))
+(add-hook 'sh-mode-hook 'my-sh-setup)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; markdown-mode
@@ -619,10 +594,9 @@
    (cons '("\\.md" . markdown-mode) auto-mode-alist))
 (defun my-markdown-setup ()
   (turn-on-auto-fill)  
-  (define-key markdown-mode-map (kbd "<tab>") 'clever-hippie-tab)
+  (define-key markdown-mode-map (kbd "<tab>") 'my-hippie-tab)
   (modify-syntax-entry ?\" "."))  
-(eval-after-load "markdown-mode"
-  '(add-hook 'markdown-mode-hook 'my-markdown-setup))
+(add-hook 'markdown-mode-hook 'my-markdown-setup)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ispell
@@ -689,3 +663,10 @@
      "Set tab-width to 2"
      (setq tab-width 2)
      ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; uniquify
+
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'forward)
+
