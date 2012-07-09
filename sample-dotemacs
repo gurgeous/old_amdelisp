@@ -53,24 +53,29 @@
    `(font-lock-type-face ((,class (:foreground ,orange))))
    ))
 
+;; set background to black when running in a shell
 (when (not window-system)
   (set-background-color "black")
   (set-face-background 'default "black")
   (set-face-background 'region "black"))
   
-;; put the window on the right, make it 87 columns wide. Also, enable
-;; the mouse wheel.
+;; window settings
 (when window-system
-  (setq window-position 'right
-        window-columns 87
-        window-fudge '(0 12 0 55))
-
-  (when is-win32
-    (setq my-font (window-build-font "Andale" 10)))
+  (if (> (x-display-pixel-width) 1280)
+      (setq window-columns 120))
+  
+  (set-face-attribute 'default nil :font
+                      (cond
+                       (is-win32 "Andale-10")
+                       ((> (x-display-pixel-width) 1280)
+                        "Inconsolata-14")
+                       "Inconsolata-13"))
 
   ;; highlight line-mode
   (global-hl-line-mode)
-  )
+
+  ;; confirm when quit
+  (setq confirm-before-kill-emacs t))
 
 ;; i don't like menus...
 (menu-bar-mode 0)
@@ -89,11 +94,11 @@
 (global-auto-revert-mode 1)
 
 ;; but leave it off for TAGS files
-(defun turn-off-auto-revert-hook ()
-  "If this is a TAGS file, turn off auto-revert."
-  (when (string= (buffer-name) "TAGS")
-    (setq global-auto-revert-ignore-buffer t)))
-(add-hook 'find-file-hooks 'turn-off-auto-revert-hook)
+;; (defun turn-off-auto-revert-hook ()
+;;   "If this is a TAGS file, turn off auto-revert."
+;;   (when (string= (buffer-name) "TAGS")
+;;     (setq global-auto-revert-ignore-buffer t)))
+;; (add-hook 'find-file-hooks 'turn-off-auto-revert-hook)
 
 ; no tramp, please
 (setq tramp-mode nil)
@@ -105,7 +110,6 @@
 ;; random settings
 
 (setq
- abtags-keymap-prefix nil
  backward-delete-char-untabify-method 'all
  sort-fold-case t
  tags-add-tables t
@@ -120,7 +124,10 @@
 (global-set-key [f12] 'next-error)
 (global-set-key "\C-\M-q" 'backward-up-list-indent)
 (global-set-key "\M-," 'tags-search-tags-table)
+(global-set-key "\M-." 'find-file-in-project)
 
-;; use TAB key for completion everywhere
-(global-set-key-override0 "\t" 'clever-hippie-tab)
-(global-set-key-override  "\t" 'clever-nxml-tab 'nxml-mode)
+(defun my-find-file-hook ()
+  (local-set-key "\t" 'clever-hippie-tab)
+  (local-set-key "\177" 'backward-delete-char-untabify)
+  )
+(add-hook 'find-file-hooks 'my-find-file-hook)

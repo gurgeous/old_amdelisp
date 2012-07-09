@@ -31,7 +31,7 @@
                           ("gnu" . "http://elpa.gnu.org/packages/")
                           ("marmalade" . "http://marmalade-repo.org/packages/")))
       (packages
-       '(ascii coffee-mode csharp-mode css-mode find-file-in-project go-mode
+       '(ascii coffee-mode csharp-mode css-mode go-mode
                guess-offset js2-mode lua-mode markdown-mode pager
                php-mode rainbow-mode ruby-mode solarized-theme
                volatile-highlights yaml-mode yari))

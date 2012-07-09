@@ -1,4 +1,5 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;; mode defaults ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; etags
 
@@ -182,38 +183,13 @@
 ;; html and friends
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; hexcolor
-
-(defun color-get-intensity (cstring)
-  (let* ((rgb (x-color-values cstring))
-         (r (nth 0 rgb))
-         (g (nth 1 rgb))
-         (b (nth 2 rgb)))
-    (/ (+ r g b) 3)))
-
-(defun hex-color-face (s)
-  (list
-   :foreground
-   (if (< (color-get-intensity s) 127) "white" "black")
-   :background
-   s))
-
-(defvar hexcolor-keywords
-  `((,(concat
-       "\\(#[0-9a-fA-F]\\{3\\}[0-9a-fA-F]\\{3\\}?\\|"
-       (regexp-opt (x-defined-colors) 'words)
-       "\\);")
-     (0 (put-text-property (match-beginning 1)
-                           (match-end 1)
-                           'face (hex-color-face (match-string-no-properties 1)))))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; css
 
 (eval-when-compile (require 'css-mode))
+(eval-when-compile (require 'rainbow-mode))
 (defun my-css-setup ()
   (setq css-indent-offset 2)
-  (font-lock-add-keywords nil hexcolor-keywords)
+  (rainbow-turn-on)
   )
 (eval-after-load "css-mode"
   '(add-hook 'css-mode-hook 'my-css-setup))
@@ -428,45 +404,8 @@
 (require 'generic)
   
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; indent-relative
-
-(defun indent-relative (&optional unindented-ok)
-  "Space out to under next indent point in previous nonblank line.
-An indent point is a non-whitespace character following whitespace.
-If the previous nonblank line has no indent points beyond the
-column point starts at, `tab-to-tab-stop' is done instead."
-  (interactive "P")
-  (if (and abbrev-mode
-           (eq (char-syntax (preceding-char)) ?w))
-      (expand-abbrev))
-  (let ((start-column (current-column))
-        indent)
-    (save-excursion
-      (beginning-of-line)
-      (if (re-search-backward "^[^\n]" nil t)
-          (let ((end (save-excursion (forward-line 1) (point))))
-            (move-to-column start-column)
-            ;; Is start-column inside a tab on this line?
-            (if (> (current-column) start-column)
-                (backward-char 1))
-            (or (looking-at "[ \t]")
-                unindented-ok
-                (skip-chars-forward "^ \t" end))
-            (skip-chars-forward " \t" end)
-            (or (= (point) end) (setq indent (current-column))))))
-    (if indent
-        (let ((opoint (point-marker)))
-          (delete-region (point) (progn (skip-chars-backward " \t") (point)))
-          (indent-to indent 0)
-          (if (> opoint (point))
-              (goto-char opoint))
-          (move-marker opoint nil))
-      ;;; amd - only do tab-to-tab if we can't leave it alone
-      (if (not unindented-ok)
-          (tab-to-tab-stop)))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; pager
+
 (require 'pager)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -743,7 +682,7 @@ column point starts at, `tab-to-tab-stop' is done instead."
 (setq clean-buffer-list-delay-general 5)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; midnight
+;; go
 
 (eval-after-load "go-mode"
   '(defadvice go-mode (after go-mode-after activate)

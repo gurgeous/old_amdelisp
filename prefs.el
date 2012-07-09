@@ -10,7 +10,6 @@
       backup-by-copying t
       comint-input-ring-size 99      
       completion-ignore-case t
-      display-time-format nil
       file-name-buffer-file-type-alist '(("\\.cgi$" . t))
       fill-column 60
       gc-cons-threshold 200000
@@ -43,7 +42,6 @@
 (setq backup-inhibited t
       backward-delete-char-untabify-method 'hungry
       column-number-mode t
-      confirm-before-kill-emacs nil
       line-number-mode t
       require-final-newline nil)
 
@@ -57,18 +55,15 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; editing
 
-(global-set-key "\C-\\"     'advertised-undo)
-(global-set-key "\C-c\C-c"      'comment-region)  
-(global-set-key "\C-c\C-u"  'uncomment-region)
-(global-set-key "\C-m"      'newline-and-indent)
-(global-set-key "\C-x."     'find-tag)
-(global-set-key "\C-x\C-b"      'electric-buffer-list)
-(global-set-key "\M-."      'find-tag-non-interactive)
-(global-set-key "\M-;"      'tags-return)
-(global-set-key "\M-g"          'goto-line)
-(global-set-key [C-backspace]   'backward-kill-word)
-(global-set-key [C-kp-right]    'indent-for-tab-command)
-(global-set-key [C-right]       'indent-for-tab-command)
+(global-set-key "\C-\\"       'advertised-undo)
+(global-set-key "\C-c\C-c"    'comment-region)  
+(global-set-key "\C-c\C-u"    'uncomment-region)
+(global-set-key "\C-m"        'newline-and-indent)
+(global-set-key "\C-x\C-b"    'electric-buffer-list)
+(global-set-key "\M-g"        'goto-line)
+(global-set-key [C-backspace] 'backward-kill-word)
+(global-set-key [C-kp-right]  'indent-for-tab-command)
+(global-set-key [C-right]     'indent-for-tab-command)
 
 ;; mini-buffer
 (define-key minibuffer-local-map "\t" 'hippie-expand)
@@ -108,11 +103,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; shell
 
-(global-set-key-override "\t" 'comint-dynamic-complete 'shell-mode)
-(global-set-key-override "\C-c\C-c" 'comint-interrupt-subjob 'shell-mode)
+; REMIND: move these into modes.el
+;; (global-set-key-override "\t" 'comint-dynamic-complete 'shell-mode)
+;; (global-set-key-override "\C-c\C-c" 'comint-interrupt-subjob 'shell-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; imenu
+
 (when window-system
   (global-set-key [C-down-mouse-3] 'imenu))
 
@@ -127,8 +124,6 @@
 
 (setq ring-bell-function (function (lambda ())))
 
-(defvar my-font nil)
-
 (when window-system
   (blink-cursor-mode 1)
   (set-scroll-bar-mode nil)
@@ -137,23 +132,11 @@
   (tool-bar-mode 0)
   (transient-mark-mode 0)
 
-  (setq window-position 'center)
-  (setq window-columns 100)
-  (setq window-fudge '(0 0 0 0))
-  (if is-win32 (setq window-fudge '(0 0 0 55)))
-  (if is-win32 (setq my-font (window-build-font "Courier New" 9)))
-
-  (window-set-frame-default 'auto-raise nil)
-  (window-set-frame-default 'cursor-type 'box)
-  (window-set-frame-default 'scroll-bar-width 12)
+  (add-to-list 'default-frame-alist '(auto-raise . nil))
+  (add-to-list 'default-frame-alist '(scroll-bar-width . 12))
 
   ;; frame title
-  (setq frame-title-format
-        (concat "Emacs@"
-                (if (string-match "^\\([^.]+\\)\..+" system-name)
-                    (match-string 1 system-name)
-                  system-name)
-                " - %f")))
+  (setq frame-title-format "Emacs - %f"))
 
 (when (or window-system (not is-win32))
   (setq font-lock-verbose 2048)

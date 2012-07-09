@@ -8,7 +8,7 @@
 ;; 
 
 (eval-when-compile (require 'autorevert))
-(eval-after-load "autorevert"
+(eval-after-load 'autorevert
   '(progn
      (defun file-change-too-close-for-comfort ()
        (let* ((file-time-raw (nth 5 (file-attributes (buffer-file-name))))
@@ -96,7 +96,7 @@ This is an internal function used by Auto-Revert Mode."
 ;;
 
 (eval-when-compile (require 'ruby-mode))
-(eval-after-load "ruby-mode"
+(eval-after-load 'ruby-mode
   '(defun ruby-calculate-indent (&optional parse-start)
      "Returns the proper indentation level of the current line."
      ;; TODO: Document body
@@ -263,30 +263,94 @@ This is an internal function used by Auto-Revert Mode."
 
 
 ;;
-;; Change find-file-in-project so that it sets project-root whenever
-;; it opens a file. That way we can use TAGS files that include files
-;; outside the root. For example, the TAGS file for a Rails app can
-;; include the gems used by that app. I use this a lot.
+;; Change find-file-in-project to use the previous project root if
+;; none is found.
 ;; 
 
 (eval-when-compile (require 'find-file-in-project))
-(eval-after-load "find-file-in-project"
-  '(defun find-file-in-project ()
-     "Prompt with a completing list of all files in the project to find one.
+(eval-after-load 'find-file-in-project
+  '(progn
+     (defvar ffip-project-root-previous nil)
+     (defalias 'ffip-project-root-original (symbol-function 'ffip-project-root))
+     (defun ffip-project-root ()
+       (let ((project-root (ffip-project-root-original)))
+         (if project-root
+             (setq ffip-project-root-previous project-root)
+           (setq project-root ffip-project-root-previous))
+         project-root))
+     ))
 
-The project's scope is defined as the first directory containing
-an `.emacs-project' file. You can override this by locally
-setting the `ffip-project-root' variable."
-     (interactive)
-     (let* ((project-files (ffip-project-files))
-            (files (mapcar 'car project-files))
-            (file (if (and (boundp 'ido-mode) ido-mode)
-                      (ido-completing-read "Find file in project: " files)
-                    (completing-read "Find file in project: " files)))
-            ;; amd - save this for later
-            (project-root (ffip-project-root)))
-       (find-file (cdr (assoc file project-files)))
-       ;; amd - remember the root
-       (make-local-variable 'ffip-project-root)
-       (setq ffip-project-root project-root)))
-  )
+;;
+;; Sadly, the old version of haml-mode requires this but ruby-mode
+;; doesn't define it in emacs 24.
+;;
+
+(eval-when-compile (require 'ruby-mode))
+(eval-after-load 'ruby-mode
+  '(defconst ruby-font-lock-syntactic-keywords
+     `( ;; #{ }, #$hoge, #@foo are not comments
+       ("\\(#\\)[{$@]" 1 (1 . nil))
+       ;; the last $', $", $` in the respective string is not variable
+       ;; the last ?', ?", ?` in the respective string is not ascii code
+       ("\\(^\\|[\[ \t\n<+\(,=]\\)\\(['\"`]\\)\\(\\\\.\\|\\2\\|[^'\"`\n\\\\]\\)*?\\\\?[?$]\\(\\2\\)"
+        (2 (7 . nil))
+        (4 (7 . nil)))
+       ;; $' $" $` .... are variables
+       ;; ?' ?" ?` are ascii codes
+       ("\\(^\\|[^\\\\]\\)\\(\\\\\\\\\\)*[?$]\\([#\"'`]\\)" 3 (1 . nil))
+       ;; regexps
+       ("\\(^\\|[[=(,~?:;<>]\\|\\(^\\|\\s \\)\\(if\\|elsif\\|unless\\|while\\|until\\|when\\|and\\|or\\|&&\\|||\\)\\|g?sub!?\\|scan\\|split!?\\)\\s *\\(/\\)[^/\n\\\\]*\\(\\\\.[^/\n\\\\]*\\)*\\(/\\)"
+        (4 (7 . ?/))
+        (6 (7 . ?/)))
+       ("^=en\\(d\\)\\_>" 1 "!")
+       ;; General delimited string.
+       ("\\(^\\|[[ \t\n<+(,=]\\)\\(%[xrqQwW]?\\([^<[{(a-zA-Z0-9 \n]\\)[^\n\\\\]*\\(\\\\.[^\n\\\\]*\\)*\\(\\3\\)\\)"
+        (3 "\"")
+        (5 "\""))
+       ("^\\(=\\)begin\\_>" 1 (ruby-comment-beg-syntax)))
+     "Syntactic keywords for Ruby mode.  See `font-lock-syntactic-keywords'.")
+)
+
+;;
+;; indent-relative - only do tab-to-tab if we can't leave it alone
+;;
+
+(defun indent-relative (&optional unindented-ok)
+  "Space out to under next indent point in previous nonblank line.
+An indent point is a non-whitespace character following whitespace.
+The following line shows the indentation points in this line.
+    ^         ^    ^     ^   ^           ^      ^  ^    ^
+If the previous nonblank line has no indent points beyond the
+column point starts at, `tab-to-tab-stop' is done instead, unless
+this command is invoked with a numeric argument, in which case it
+does nothing.
+
+See also `indent-relative-maybe'."
+  (interactive "P")
+  (if (and abbrev-mode
+           (eq (char-syntax (preceding-char)) ?w))
+      (expand-abbrev))
+  (let ((start-column (current-column))
+        indent)
+    (save-excursion
+      (beginning-of-line)
+      (if (re-search-backward "^[^\n]" nil t)
+          (let ((end (save-excursion (forward-line 1) (point))))
+            (move-to-column start-column)
+            ;; Is start-column inside a tab on this line?
+            (if (> (current-column) start-column)
+                (backward-char 1))
+            (or (looking-at "[ \t]")
+                unindented-ok
+                (skip-chars-forward "^ \t" end))
+            (skip-chars-forward " \t" end)
+            (or (= (point) end) (setq indent (current-column))))))
+    (if indent
+        (let ((opoint (point-marker)))
+          (indent-to indent 0)
+          (if (> opoint (point))
+              (goto-char opoint))
+          (move-marker opoint nil))
+      ;; amd
+      (if (not unindented-ok)
+          (tab-to-tab-stop)))))
