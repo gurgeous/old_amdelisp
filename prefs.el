@@ -31,7 +31,6 @@
       read-file-name-completion-ignore-case t
       require-final-newline nil
       save-abbrevs nil
-      scroll-bar-mode nil
       sort-fold-case t
       tab-width 4
       tags-add-tables t
@@ -43,7 +42,7 @@
 
 ;; confirm quit, but only if we're in a window
 (when window-system
-  (setq confirm-before-kill-emacs t))
+  (setq confirm-kill-emacs 'yes-or-no-p))
 
 ;; what's the clipboard format?
 (set-clipboard-coding-system 'utf-8)
@@ -77,6 +76,7 @@
 (menu-bar-mode 0)
 (when window-system
   (global-hl-line-mode 1)
+  (scroll-bar-mode 0)
   (tool-bar-mode 0))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
