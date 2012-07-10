@@ -20,7 +20,6 @@
     (setq default-directory old-dir)))
 
 (setq is-win32 (memq system-type '(windows-nt ms-dos ms-windows)))
-;(setq source-directory (if is-win32 (getenv "emacs_dir") "/usr/share/emacs"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Packages

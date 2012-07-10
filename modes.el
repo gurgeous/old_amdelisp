@@ -239,6 +239,9 @@
   (define-key coffee-mode-map [C-right] 'my-increase)
   )  
 (add-hook 'coffee-mode-hook 'my-coffee-setup)
+; need this one for coffee.erb
+(add-to-list 'auto-mode-alist '("\\.coffee" . coffee-mode))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; sql

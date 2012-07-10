@@ -3,8 +3,6 @@
 ;; copy this into your ~/.emacs to personalize.
 ;;
 
-
-;; you probably don't care about these
 (setq auto-revert-interval 2
       auto-save-list-file-prefix nil
       backup-by-copying t
@@ -29,15 +27,12 @@
       major-mode 'text-mode
       message-log-max 200
       mouse-wheel-mode t
-      PC-word-delimiters "-_.="
       read-buffer-completion-ignore-case t
       read-file-name-completion-ignore-case t
       require-final-newline nil
       save-abbrevs nil
       scroll-bar-mode nil
-      speedbar-track-mouse-flag nil
       tab-width 4
-      track-eol nil
       truncate-partial-width-windows nil
       visible-bell t
       w32-use-full-screen-buffer nil
