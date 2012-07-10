@@ -12,24 +12,16 @@
 
 
 
-
-
-
-      
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; everything else in this file is OPTIONAL but you may find some of
 ;; it useful
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; look and feel
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 
-;; color theme
-
+; solarized, slightly customized
 (load "solarized-theme")
 (load-theme 'solarized-dark t)
 
@@ -53,64 +45,33 @@
    `(font-lock-type-face ((,class (:foreground ,orange))))
    ))
 
-;; set background to black when running in a shell
+;; fix some faces when running in a shell
 (when (not window-system)
-  (set-background-color "black")
-  (set-face-background 'default "black")
-  (set-face-background 'region "black"))
-  
-;; window settings
+  (let ((fg "white") (bg "black"))
+    (set-face-background 'default bg)
+    (set-face-foreground 'region bg)
+    (set-face-background 'region fg)))
+
+;; font
 (when window-system
-  (if (> (x-display-pixel-width) 1280)
-      (setq window-columns 120))
-  
-  (set-face-attribute 'default nil :font
-                      (cond
-                       (is-win32 "Andale-10")
-                       ((> (x-display-pixel-width) 1280)
-                        "Inconsolata-14")
-                       "Inconsolata-13"))
+  (set-face-font 'default
+                 (cond
+                  (is-win32 "Andale-10")
+                  ((> (x-display-pixel-width) 1280) "Inconsolata-14")
+                  "Inconsolata-13")))
 
-  ;; highlight line-mode
-  (global-hl-line-mode)
-
-  ;; i like transient-mark-mode
-  (transient-mark-mode t)
-  
-  ;; confirm when quit
-  (setq confirm-before-kill-emacs t))
+;; window size
+(when (and window-system (> (x-display-pixel-width) 1280))
+  (setq window-columns 120))
 
 
-
-
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; modes
-
-;; turn on global-auto-revert-mode
-(global-auto-revert-mode 1)
-
-;; turn on ido
-(require 'ido)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; random settings
-
-(setq
- backward-delete-char-untabify-method 'all
- sort-fold-case t
- tags-add-tables t
- tramp-mode nil
- )
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; keys
+;;
 
 (global-set-key [f3]  'vc-diff)
-(global-set-key [f7] 'find-file-in-project)
+(global-set-key [f7]  'find-file-in-project)
 (global-set-key [f8]  'grep)
-(global-set-key [f12] 'next-error)
 (global-set-key "\C-\M-q" 'backward-up-list-indent)
 (global-set-key "\M-," 'tags-search-tags-table)
 (global-set-key "\M-." 'find-file-in-project)
@@ -122,3 +83,16 @@
   (local-set-key "\177" 'backward-delete-char-untabify)
   )
 (add-hook 'find-file-hooks 'my-find-file-hook)
+
+
+;;
+;; other stuff
+;;
+
+;; turn on ido
+(require 'ido)
+
+;; i like delete to be hungry
+(setq
+ backward-delete-char-untabify-method 'all
+ )

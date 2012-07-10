@@ -32,11 +32,18 @@
       require-final-newline nil
       save-abbrevs nil
       scroll-bar-mode nil
+      sort-fold-case t
       tab-width 4
+      tags-add-tables t
+      tramp-mode nil
       truncate-partial-width-windows nil
       visible-bell t
       w32-use-full-screen-buffer nil
       x-select-enable-clipboard t)
+
+;; confirm quit, but only if we're in a window
+(when window-system
+  (setq confirm-before-kill-emacs t))
 
 ;; what's the clipboard format?
 (set-clipboard-coding-system 'utf-8)
@@ -63,12 +70,14 @@
 (put 'upcase-region   'disabled nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; window chrome
+;; global modes
 
-(global-font-lock-mode t)
+(global-auto-revert-mode 1)
+(global-font-lock-mode 1)
 (menu-bar-mode 0)
-(tool-bar-mode 0)
-(transient-mark-mode 0)
+(when window-system
+  (global-hl-line-mode 1)
+  (tool-bar-mode 0))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; keys
@@ -84,8 +93,8 @@
 (global-set-key [C-right]     'indent-for-tab-command)
 
 ;; mini-buffer
-(define-key minibuffer-local-map "\t" 'hippie-expand)
-(define-key minibuffer-local-must-match-map "\t" 'minibuffer-complete)
+(define-key minibuffer-local-map                     "\t" 'hippie-expand)
+(define-key minibuffer-local-must-match-map          "\t" 'minibuffer-complete)
 (define-key minibuffer-local-filename-completion-map "\t" 'minibuffer-complete)
    
 ;; movement
@@ -109,5 +118,15 @@
 (global-set-key "\C-x\C-s"      'save-buffer)
 
 ;; compilation
-(global-set-key [M-up]      'previous-error)
-(global-set-key [M-down]    'next-error)
+(global-set-key [M-up]          'previous-error)
+(global-set-key [M-down]        'next-error)
+
+; turn off suspend-frame. I never, ever want this!
+(global-set-key "\C-x\C-z"      nil) 
+
+; fixes for specific keys
+(when (not is-win32)
+  ;; http://www.cs.cmu.edu/cgi-bin/info2www?(emacs)Keyboard%20Translations
+  (keyboard-translate ?\C-h ?\C-?)
+  ;; http://www.emacswiki.org/emacs/MetaKeyProblems  
+  (setq x-alt-keysym 'meta))

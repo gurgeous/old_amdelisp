@@ -659,17 +659,7 @@
 (setq clean-buffer-list-delay-general 5)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; go
-
-(eval-after-load "go-mode"
-  '(defadvice go-mode (after go-mode-after activate)
-     "Set tab-width to 2"
-     (setq tab-width 2)
-     ))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; uniquify
 
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
-
