@@ -71,6 +71,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; global modes
 
+(auto-image-file-mode t)
 (global-auto-revert-mode 1)
 (global-font-lock-mode 1)
 (menu-bar-mode 0)

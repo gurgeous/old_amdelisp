@@ -122,6 +122,12 @@
 (setq csharp-want-flymake-fixup nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; objc
+
+; gotta remove this rule since image mode tries to steal .m
+(setq auto-mode-alist (remove (rassoc 'image-mode auto-mode-alist) auto-mode-alist))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; text
 
 (defun my-text-setup ()
@@ -375,8 +381,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; generic modes
 
-(let ((max-specpdl-size 1200))
-  (require 'generic-x))
+(require 'generic-x)
 
 (setq generic-extras-enable-list
       (append
@@ -399,6 +404,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ascii
+
 (eval-after-load "ascii"
   '(set-face-background 'ascii-ascii-face (face-background 'region)))
 
@@ -492,20 +498,10 @@
 (fset 'sgml-mode 'nxml-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; color-theme
-
-(autoload 'color-theme-select "color-theme" "color-theme" t)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; antlr
 
 (autoload 'antlr-mode "antlr-mode" nil t)
 (setq auto-mode-alist (cons '("\\.g\\'" . antlr-mode) auto-mode-alist))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; turn on image modes
-
-(auto-image-file-mode t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ruby mode
@@ -535,24 +531,6 @@
 (add-to-list 'auto-mode-alist '("/\\(Rake\\|Gem\\|Cap\\|Tel\\)file$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.\\(rake\\|rxml\\|pill\\|irbrc\\|Rules\\)\\'$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.\\(sinew\\|gemspec\\|builder\\)$" . ruby-mode))
-
-(define-generic-mode 'yaml-mode
-  (list ?\#)
-  nil
-  (list
-   '("^[ \t]*\\(.+\\)[ \t]*:[ \r\n]" 0 font-lock-type-face)
-   '("\\(%YAML\\|# \\(.*\\)\\|\\(---\\|\\.\\.\\.\\)\\(.*\\)\\)" 0 font-lock-comment-face)
-   '("\\(\\*\\|\\&\\)\\(.*\\)" 0 (cons font-lock-variable-name-face '(underline)))
-   '("\\!\\!\\sw+[ \r\n]" 0 font-lock-function-name-face)
-   )
-  (list "\\.yml$")
-  nil
-  "Generic mode for yaml files.")
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; tramp
-
-(setq tramp-default-method "ssh")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; lua
@@ -663,3 +641,10 @@
 
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ffip
+
+(setq ffip-patterns
+  '("*.rb" "*.haml" "*.el" "*.js" "*.yml" "*.erb" "*.scss"))
+

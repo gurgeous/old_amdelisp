@@ -57,8 +57,8 @@
   (set-face-font 'default
                  (cond
                   (is-win32 "Andale-10")
-                  ((> (x-display-pixel-width) 1280) "Inconsolata-14")
-                  "Inconsolata-13")))
+                  ((> (x-display-pixel-height) 900) "Inconsolata-14")
+                  (t "Inconsolata-12"))))
 
 ;; window size
 (when (and window-system (> (x-display-pixel-width) 1280))
