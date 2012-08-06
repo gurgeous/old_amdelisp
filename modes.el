@@ -4,9 +4,17 @@
 ;; etags
 
 (setq tags-revert-without-query t)
-(defun my-etags-setup ()
-  (setq case-fold-search nil))
-(add-hook 'tags-table-format-hooks 'my-etags-setup)
+
+;; clear tags when the file is reverted
+(defun tags-revert-hook ()
+  (initialize-new-tags-table)
+  (if (functionp 'ffip-clear-project-cache)            
+      (ffip-clear-project-cache)))
+
+;; add tags-revert-hook after tags-table-mode is called
+(defadvice tags-table-mode
+  (after tabs-table-mode-revert-hook activate)
+  (add-hook 'after-revert-hook 'tags-revert-hook nil t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; compile

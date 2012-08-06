@@ -9,8 +9,6 @@
     (if tags
         (progn
           (visit-tags-table tags)
-          (if (functionp 'ffip-clear-project-cache)            
-              (ffip-clear-project-cache))
           (message "Loaded %s." tags))
       (error "Could not find TAGS in current path."))))
 
