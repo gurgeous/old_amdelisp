@@ -8,7 +8,7 @@
 ;; clear tags when the file is reverted
 (defun tags-revert-hook ()
   (initialize-new-tags-table)
-  (if (functionp 'ffip-clear-project-cache)            
+  (if (functionp 'ffip-clear-project-cache)
       (ffip-clear-project-cache)))
 
 ;; add tags-revert-hook after tags-table-mode is called
@@ -124,7 +124,7 @@
 ;; csharp
 
 (defun my-csharp-mode ()
-  (setq indent-tabs-mode nil)  
+  (setq indent-tabs-mode nil)
   (local-set-key (kbd "{") 'c-electric-brace))
 (add-hook 'csharp-mode-hook 'my-csharp-mode)
 (setq csharp-want-flymake-fixup nil)
@@ -164,7 +164,7 @@
   (setq tab-width 4)
   (set-face-background 'cperl-hash-face (face-background 'font-lock-keyword-face))
   )
-  
+
 (add-hook 'cperl-mode-hook 'my-cperl-setup)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -236,22 +236,24 @@
   ;; (define-key js2-mode-map "\C-m" 'newline-and-indent)
   ;; (make-local-variable 'standard-indent)
   ;; (setq standard-indent 2)
-  (define-key js2-mode-map [C-left] 'my-decrease)  
+  (define-key js2-mode-map [C-left] 'my-decrease)
   (define-key js2-mode-map [C-right] 'my-increase))
 (add-hook 'js2-mode-hook 'my-js2-setup)
+(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
 ;; coffee
 (eval-when-compile (require 'coffee-mode))
 (defun my-coffee-setup ()
   (make-local-variable 'standard-indent)
+  (make-local-variable 'backward-delete-char-untabify-method)
   (setq
-   backward-delete-char-untabify-method 'untabify   
+   backward-delete-char-untabify-method 'untabify
    coffee-tab-width 2
    standard-indent 2
    tab-width 2)
-  (define-key coffee-mode-map [C-left] 'my-decrease)  
+  (define-key coffee-mode-map [C-left] 'my-decrease)
   (define-key coffee-mode-map [C-right] 'my-increase)
-  )  
+  )
 (add-hook 'coffee-mode-hook 'my-coffee-setup)
 ; need this one for coffee.erb
 (add-to-list 'auto-mode-alist '("\\.coffee" . coffee-mode))
@@ -353,7 +355,7 @@
            ;; this is for TemplateToolkit, not SQL... a bit of a hack
            (cons "\\[%.*%\\]" 'border))))
   (font-lock-add-keywords 'sql-mode sql-added-font-lock-keywords)
-  (font-lock-add-keywords 'sql-interactive-mode sql-added-font-lock-keywords)         
+  (font-lock-add-keywords 'sql-interactive-mode sql-added-font-lock-keywords)
   )
 
 (defun my-sql-setup ()
@@ -404,7 +406,7 @@
 
 (eval-when-compile (require 'generic))
 (require 'generic)
-  
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; pager
 
@@ -454,7 +456,7 @@
 
 (eval-when-compile (require 'diff-mode))
 (defun my-diff-setup ()
-  (copy-face 'font-lock-string-face 'diff-removed-face)  
+  (copy-face 'font-lock-string-face 'diff-removed-face)
   (copy-face 'font-lock-builtin-face 'diff-added-face)
   (copy-face 'font-lock-comment-face 'diff-hunk-header-face))
 (add-hook 'diff-mode-hook 'my-diff-setup)
@@ -484,7 +486,7 @@
 (eval-when-compile (require 'nxml-mode))
 (defun my-nxml-setup ()
   (modify-syntax-entry ?= ".")
-  (modify-syntax-entry ?& "w")  
+  (modify-syntax-entry ?& "w")
   (setq nxml-child-indent 2)
   (setq nxml-slash-auto-complete-flag t))
 (add-hook 'nxml-mode-hook 'my-nxml-setup)
@@ -537,7 +539,7 @@
     (font-lock-add-keywords 'ruby-mode ruby-added-font-lock-keywords)))
 
 (add-to-list 'auto-mode-alist '("/\\(Rake\\|Gem\\|Cap\\|Tel\\)file$" . ruby-mode))
-(add-to-list 'auto-mode-alist '("\\.\\(rake\\|rxml\\|pill\\|irbrc\\|Rules\\)\\'$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.\\(rake\\|rxml\\|pill\\|irbrc\\|Rules\\|pryrc\\)\\'$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.\\(sinew\\|gemspec\\|builder\\)$" . ruby-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -554,10 +556,10 @@
 (defun my-haml-setup ()
   (make-local-variable 'standard-indent)
   (setq standard-indent 2)
-  (define-key haml-mode-map [C-left] 'my-decrease)  
+  (define-key haml-mode-map [C-left] 'my-decrease)
   (define-key haml-mode-map [C-right] 'my-increase)
   (setq haml-backspace-backdents-nesting nil)
-  (modify-syntax-entry ?_ "." haml-mode-syntax-table))  
+  (modify-syntax-entry ?_ "." haml-mode-syntax-table))
 (add-hook 'haml-mode-hook 'my-haml-setup)
 
 (setq auto-mode-alist (cons '("\\.haml$" . haml-mode) auto-mode-alist))
@@ -582,9 +584,9 @@
 (setq auto-mode-alist
    (cons '("\\.md" . markdown-mode) auto-mode-alist))
 (defun my-markdown-setup ()
-  (turn-on-auto-fill)  
+  (turn-on-auto-fill)
   (define-key markdown-mode-map (kbd "<tab>") 'my-hippie-tab)
-  (modify-syntax-entry ?\" "."))  
+  (modify-syntax-entry ?\" "."))
 (add-hook 'markdown-mode-hook 'my-markdown-setup)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -597,7 +599,7 @@
       ispell-program-name "aspell"
       ispell-silently-savep t)
      (set-default 'ispell-skip-html t)))
-  
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; git
 
@@ -626,7 +628,7 @@
         ido-enable-tramp-completion nil
         ido-ignore-buffers '("\\` " "^\*")
         ))
-     
+
      (ido-mode 'buffer)
      (my-ido-setup)
      ))
@@ -653,6 +655,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ffip
 
-(setq ffip-patterns
-  '("*.rb" "*.haml" "*.el" "*.js" "*.yml" "*.erb" "*.scss"))
-
+(setq
+ ffip-patterns '("*.rb" "*.haml" "*.el" "*.js" "*.yml" "*.erb" "*.scss" "*.jade" "*.coffee" "*.less")
+ ffip-find-options "-or -path '*/node_modules' -prune")
