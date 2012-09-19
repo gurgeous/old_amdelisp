@@ -26,19 +26,20 @@
 
 (package-initialize)
 
-(let ((package-archives '(("ELPA" . "http://tromey.com/elpa/") 
+(let ((package-archives '(("ELPA" . "http://tromey.com/elpa/")
                           ("gnu" . "http://elpa.gnu.org/packages/")
                           ("marmalade" . "http://marmalade-repo.org/packages/")))
       (packages
        '(ascii coffee-mode csharp-mode css-mode go-mode
-               guess-offset js2-mode lua-mode markdown-mode pager
-               php-mode rainbow-mode ruby-mode solarized-theme
-               volatile-highlights yaml-mode yari))
+               guess-offset js2-mode less-css-mode lua-mode
+               markdown-mode pager php-mode rainbow-mode
+               ruby-mode solarized-theme volatile-highlights
+               yaml-mode yari))
       (install nil))
   ;; do we have to install anything?
   (dolist (i packages)
     (if (not (package-installed-p i))
-        (setf install t)))
+        (setq install t)))
   (when install
     (message "Refreshing package database...")
     (package-refresh-contents)
