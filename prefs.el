@@ -9,7 +9,7 @@
       backup-inhibited t
       backward-delete-char-untabify-method 'hungry
       column-number-mode t
-      comint-input-ring-size 99      
+      comint-input-ring-size 99
       completion-ignore-case t
       fill-column 60
       font-lock-maximum-decoration t
@@ -84,7 +84,7 @@
 ;; keys
 
 (global-set-key "\C-\\"       'advertised-undo)
-(global-set-key "\C-c\C-c"    'comment-region)  
+(global-set-key "\C-c\C-c"    'comment-region)
 (global-set-key "\C-c\C-u"    'uncomment-region)
 (global-set-key "\C-m"        'newline-and-indent)
 (global-set-key "\C-x\C-b"    'electric-buffer-list)
@@ -97,7 +97,7 @@
 (define-key minibuffer-local-map                     "\t" 'hippie-expand)
 (define-key minibuffer-local-must-match-map          "\t" 'minibuffer-complete)
 (define-key minibuffer-local-filename-completion-map "\t" 'minibuffer-complete)
-   
+
 ;; movement
 (global-set-key "\M-z"          'pager-row-up)
 (global-set-key "\C-z"          'pager-row-down)
@@ -111,9 +111,9 @@
 (global-set-key [C-kp-up]       'previous-line)
 (global-set-key [C-kp-down]     'next-line)
 (global-set-key [C-kp-left]     'backward-word)
- 
+
 ;; mistakes
-(global-set-key "\C-xf"         'find-file) 
+(global-set-key "\C-xf"         'find-file)
 (global-set-key "\C-x\C-f"      'find-file)
 (global-set-key "\C-xs"         'save-buffer)
 (global-set-key "\C-x\C-s"      'save-buffer)
@@ -123,11 +123,11 @@
 (global-set-key [M-down]        'next-error)
 
 ; turn off suspend-frame. I never, ever want this!
-(global-set-key "\C-x\C-z"      nil) 
+(global-set-key "\C-x\C-z"      nil)
 
 ; fixes for specific keys
 (when (not is-win32)
   ;; http://www.cs.cmu.edu/cgi-bin/info2www?(emacs)Keyboard%20Translations
   (keyboard-translate ?\C-h ?\C-?)
-  ;; http://www.emacswiki.org/emacs/MetaKeyProblems  
+  ;; http://www.emacswiki.org/emacs/MetaKeyProblems
   (setq x-alt-keysym 'meta))

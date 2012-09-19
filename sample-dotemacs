@@ -39,7 +39,7 @@
    'user
    `(cursor ((,class (:background ,yellow-l))))
    `(font-lock-comment-face ((,class (:foreground ,green))))
-   `(font-lock-comment-delimiter-face ((,class (:foreground ,green))))   
+   `(font-lock-comment-delimiter-face ((,class (:foreground ,green))))
    `(font-lock-constant-face ((,class (:foreground ,cyan :weight bold))))
    `(font-lock-function-name-face ((,class (:foreground ,yellow))))
    `(font-lock-keyword-face ((,class (:foreground ,blue :weight bold))))
@@ -98,3 +98,10 @@
 (setq
  backward-delete-char-untabify-method 'all
  )
+
+;; get rid of trailing whitespace
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+; temporary highlight on undo or yank
+(require 'volatile-highlights)
+(volatile-highlights-mode t)
