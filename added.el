@@ -75,12 +75,11 @@
 (defun rebuild-autoloads ()
   (interactive)
   (require 'autoload)
-  (let* ((source-directory AMDELISP)
-         (autoloads (format "%s/autoloads.el" source-directory)))
+  (let* ((autoloads (format "%s/autoloads.el" amd-elisp)))
     (save-excursion
       (with-current-buffer (find-file-noselect autoloads)
         (delete-region (point-min) (point-max))
-        (rebuild-autoloads-dir source-directory)
+        (rebuild-autoloads-dir amd-elisp)
         (save-buffer))
       (message "rebuild-autoload : %s - Done." autoloads))))
 
@@ -92,7 +91,7 @@
 If the region is not active, activate the current line."
   (if (not mark-active)
       ;; Create region from current line
-      (progn 
+      (progn
         (beginning-of-line)
         (set-mark (point))
         (end-of-line))
@@ -155,13 +154,13 @@ If the region is not active, activate the current line."
     (add-to-list 'default-frame-alist (cons 'left
                                             (cond
                                              ((eq window-position 'left)
-                                              left) 
+                                              left)
                                              ((eq window-position 'center)
                                               (/ (- display-width width) 2))
                                              (t
                                               (- display-width (+ width right))))))
     (add-to-list 'default-frame-alist (cons 'top top))
-    (add-to-list 'default-frame-alist (cons 'width window-columns)) 
+    (add-to-list 'default-frame-alist (cons 'width window-columns))
     (add-to-list 'default-frame-alist (cons 'height (/ (- display-height top bottom)
                                                        (frame-char-height))))))
 

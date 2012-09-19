@@ -2,22 +2,18 @@
 ;; Add the lisp directories to the load path so we can find these
 ;; packages easily. First add /elisp, then subdirs.
 
-(defvar AMDELISP nil)
-
-(when (not AMDELISP)
-  (error "You must set AMDELISP!"))
-
 ; check version
 (when (< (string-to-number (substring emacs-version 0 2)) 24)
-  (error "AMDELISP only works with emacs 24 or higher"))
+  (error "amdelisp only works with emacs 24 or higher"))
 
-(setq load-path (cons AMDELISP load-path))
-(let ((old-dir default-directory))
-  (unwind-protect
-      (progn
-        (setq default-directory AMDELISP)
-        (normal-top-level-add-subdirs-to-load-path))
-    (setq default-directory old-dir)))
+;; set amd-elisp
+(defvar amd-elisp
+  (let* ((this-file (file-truename load-file-name))
+         (this-dir (substring (file-name-directory this-file) 0 -1)))
+    this-dir))
+
+(add-to-list 'load-path amd-elisp)
+(add-to-list 'load-path (format "%s/emacslib" amd-elisp))
 
 (setq is-win32 (memq system-type '(windows-nt ms-dos ms-windows)))
 

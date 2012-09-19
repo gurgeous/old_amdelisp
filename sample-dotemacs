@@ -1,16 +1,10 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; To get started with emacs:
+;; Load the start file.
 ;;
-;; 1. Set the AMDELISP variable to point to the elisp/ directory. For
-;;    example:
 
-(defvar AMDELISP (format "%s/elisp" (getenv "HOME")))
-
-;; 2. Load the start file.
-(load (format "%s/start" AMDELISP))
-
-
+(let* ((this-file (file-truename load-file-name))
+       (this-dir (substring (file-name-directory this-file) 0 -1)))
+  (load (format "%s/start" this-dir)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; everything else in this file is OPTIONAL but you may find some of
