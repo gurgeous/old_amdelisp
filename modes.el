@@ -197,6 +197,7 @@
 (eval-when-compile (require 'css-mode))
 (eval-when-compile (require 'rainbow-mode))
 (defun my-css-setup ()
+  (require 'rainbow-mode)
   (setq css-indent-offset 2)
   (rainbow-turn-on)
   )

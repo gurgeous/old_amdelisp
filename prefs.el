@@ -40,9 +40,8 @@
       w32-use-full-screen-buffer nil
       x-select-enable-clipboard t)
 
-;; confirm quit, but only if we're in a window
-(when window-system
-  (setq confirm-kill-emacs 'yes-or-no-p))
+;; confirm kill emacs
+(add-hook 'kill-emacs-query-functions 'confirm-kill-emacs)
 
 ;; what's the clipboard format?
 (set-clipboard-coding-system 'utf-8)

@@ -121,6 +121,23 @@ If the region is not active, activate the current line."
       (decrease-left-margin (region-beginning) (region-end) nil))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; confirm that we should kill emacs, but only if we're in a window
+;; and have a few files open.
+
+(defun confirm-kill-emacs ()
+  (cond
+   ((and
+     window-system
+     (let ((files 0))
+       (dolist (buf (buffer-list))
+         (if (buffer-file-name buf)
+             (setq files (+ files 1))))
+       (message "FILES %d" files)
+       (> files 5)))
+    (yes-or-no-p "Really exit Emacs? "))
+   (t t)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; kill buffers matching a regex
 
 (defun kill-buffers (regexp)
