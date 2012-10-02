@@ -35,6 +35,13 @@
 (font-lock-add-keywords 'compilation-mode compilation-added-font-lock-keywords)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; filladapt mode
+
+(require 'filladapt)
+(setq filladapt-mode-line-string nil)
+(setq-default filladapt-mode t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; c/cc/java mode
 
 ;; shared
