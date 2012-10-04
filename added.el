@@ -151,6 +151,30 @@ If the region is not active, activate the current line."
 
 (provide 'added)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Allow local bindings to be specified for certain modes
+(setq mode-bindings-hashtable (make-hash-table))
+(defun ensure-key-bindings (mode &optional bindings)
+  (when (null bindings)
+    (setq bindings mode)
+    (setq mode '*all*))
+  (puthash mode bindings mode-bindings-hashtable))
+
+(defvar the-cc-modes '(c-mode c++-mode objc-mode csharp-mode java-mode idl-mode pike-mode)
+  "List of the modes which are 'subclasses' of cc-mode")
+
+(defun ensure-key-bindings-hook()
+  (let* ((mode (intern (substring (symbol-name major-mode) 0 (- (length (symbol-name major-mode)) 5))))
+         (is-c-mode (memq major-mode the-cc-modes))
+         )
+    (mapc (lambda (binding-name)
+            (let ((bindings (gethash binding-name mode-bindings-hashtable)))
+              (when bindings
+                (mapc (lambda (binding) (local-set-key (car binding) (cadr binding))) bindings))))
+          (list mode (and is-c-mode 'c-modes) '*all*))))
+
+(add-hook 'find-file-hook 'ensure-key-bindings-hook)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; position the main window at startup
 
