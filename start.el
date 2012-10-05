@@ -29,9 +29,9 @@
 (let ((packages
        '(ascii coffee-mode csharp-mode css-mode go-mode
                guess-offset js2-mode less-css-mode lua-mode
-               markdown-mode pager php-mode python-mode
-               rainbow-mode ruby-mode solarized-theme
-               volatile-highlights yaml-mode yari))
+               markdown-mode pager php-mode rainbow-mode
+               ruby-mode solarized-theme volatile-highlights
+               yaml-mode yari))
       (install nil))
   ;; do we have to install anything?
   (dolist (i packages)

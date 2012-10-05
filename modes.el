@@ -182,7 +182,6 @@
   (setq tab-width 4)
   (define-key python-mode-map [backspace] 'py-electric-backspace))
  (add-hook 'python-mode-hook 'my-python-setup)
- (autoload 'python-mode "python-mode" "Python editing mode." t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; makefile
@@ -666,3 +665,11 @@
 (setq
  ffip-patterns '("*.rb" "*.haml" "*.el" "*.js" "*.yml" "*.erb" "*.scss" "*.jade" "*.coffee" "*.less")
  ffip-find-options "-or -path '*/node_modules' -prune")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; emacs-lisp-mode
+
+(eval-when-compile (require 'lisp-mode))
+(defun my-emacs-lisp-setup ()
+  (setq tab-width 8))
+(add-hook 'emacs-lisp-mode-hook 'my-emacs-lisp-setup)
