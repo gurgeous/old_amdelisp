@@ -166,12 +166,17 @@ If the region is not active, activate the current line."
 (defun ensure-key-bindings-hook()
   (let* ((mode (intern (substring (symbol-name major-mode) 0 (- (length (symbol-name major-mode)) 5))))
          (is-c-mode (memq major-mode the-cc-modes))
+         (keymaps (append (list (current-local-map)) (current-minor-mode-maps)))
          )
-    (mapc (lambda (binding-name)
-            (let ((bindings (gethash binding-name mode-bindings-hashtable)))
-              (when bindings
-                (mapc (lambda (binding) (local-set-key (car binding) (cadr binding))) bindings))))
-          (list mode (and is-c-mode 'c-modes) '*all*))))
+    (dolist (keymap keymaps)
+      (if keymap (mapc (lambda (binding-name)
+                         (let ((bindings (gethash binding-name mode-bindings-hashtable)))
+                           (when bindings
+                             (mapc (lambda (binding)
+                                     (define-key keymap (car binding) (cadr binding)))
+                                   bindings))))
+                       (list mode (and is-c-mode 'c-modes) '*all*))
+        ))))
 
 (add-hook 'find-file-hook 'ensure-key-bindings-hook)
 
