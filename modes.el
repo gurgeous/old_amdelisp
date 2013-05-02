@@ -264,7 +264,7 @@
 (add-hook 'coffee-mode-hook 'my-coffee-setup)
 ; need this one for coffee.erb
 (add-to-list 'auto-mode-alist '("\\.coffee" . coffee-mode))
-
+(add-to-list 'interpreter-mode-alist '("coffee" . coffee-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; sql
@@ -673,3 +673,23 @@
 (defun my-emacs-lisp-setup ()
   (setq tab-width 8))
 (add-hook 'emacs-lisp-mode-hook 'my-emacs-lisp-setup)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; less-css-mode
+
+(eval-when-compile (require 'less-css-mode))
+(defun my-less-css-setup ()
+  (define-key less-css-mode-map "\C-c\C-c" 'comment-region))
+(add-hook 'less-css-mode-hook 'my-less-css-setup)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; jade-mode
+
+(eval-when-compile (require 'jade-mode))
+(defun my-jade-setup ()
+  (make-local-variable 'standard-indent)
+  (setq standard-indent 2)
+  (define-key jade-mode-map [C-left] 'my-decrease)
+  (define-key jade-mode-map [C-right] 'my-increase))
+(add-hook 'jade-mode-hook 'my-jade-setup)

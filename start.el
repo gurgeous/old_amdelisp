@@ -15,7 +15,8 @@
 (add-to-list 'load-path amd-elisp)
 (add-to-list 'load-path (format "%s/emacslib" amd-elisp))
 
-(setq is-win32 (memq system-type '(windows-nt ms-dos ms-windows)))
+(defvar is-win32 (memq system-type '(windows-nt ms-dos ms-windows)))
+(defvar is-mac (string-equal system-type "darwin"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Packages
@@ -28,10 +29,9 @@
 
 (let ((packages
        '(ascii coffee-mode csharp-mode css-mode go-mode
-               guess-offset js2-mode less-css-mode lua-mode
-               markdown-mode pager php-mode rainbow-mode
-               ruby-mode solarized-theme volatile-highlights
-               yaml-mode yari))
+               guess-offset js2-mode less-css-mode lua-mode markdown-mode
+               pager php-mode rainbow-mode ruby-mode solarized-theme
+               volatile-highlights yaml-mode yari))
       (install nil))
   ;; do we have to install anything?
   (dolist (i packages)
