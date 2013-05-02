@@ -39,6 +39,9 @@
    `(font-lock-keyword-face ((,class (:foreground ,blue :weight bold))))
    `(font-lock-string-face ((,class (:foreground ,red))))
    `(font-lock-type-face ((,class (:foreground ,orange))))
+   `(git-gutter:added ((,class (:foreground ,green))))
+   `(git-gutter:deleted ((,class (:foreground ,red))))
+   `(git-gutter:modified ((,class (:foreground ,blue))))
    ))
 
 ;; fix some faces when running in a shell
