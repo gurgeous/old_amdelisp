@@ -174,36 +174,3 @@ If the region is not active, activate the current line."
           (list mode (and is-c-mode 'c-modes) '*all*))))
 
 (add-hook 'find-file-hook 'ensure-key-bindings-hook)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; position the main window at startup
-
-(defvar window-columns 100)
-(defvar window-fudge '(0 0 0 0))
-(defvar window-position 'right)
-
-(defun window-layout ()
-  (let ((display-width  (x-display-pixel-width))
-        (display-height (x-display-pixel-height))
-        (top    (nth 0 window-fudge))
-        (right  (nth 1 window-fudge))
-        (bottom (nth 2 window-fudge))
-        (left   (nth 3 window-fudge))
-        (width (* (+ 2 window-columns) (frame-char-width)))
-        )
-
-    (add-to-list 'default-frame-alist (cons 'left
-                                            (cond
-                                             ((eq window-position 'left)
-                                              left)
-                                             ((eq window-position 'center)
-                                              (/ (- display-width width) 2))
-                                             (t
-                                              (- display-width (+ width right))))))
-    (add-to-list 'default-frame-alist (cons 'top top))
-    (add-to-list 'default-frame-alist (cons 'width window-columns))
-    (add-to-list 'default-frame-alist (cons 'height (/ (- display-height top bottom)
-                                                       (frame-char-height))))))
-
-(when window-system
-  (add-hook 'after-init-hook 'window-layout))

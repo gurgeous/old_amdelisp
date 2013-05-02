@@ -56,11 +56,6 @@
                   ((> (x-display-pixel-height) 900) "Inconsolata-14")
                   (t "Inconsolata-12"))))
 
-;; window size
-(when (and window-system (> (x-display-pixel-width) 1280))
-  (setq window-columns 120))
-
-
 ;;
 ;; keys
 ;;
