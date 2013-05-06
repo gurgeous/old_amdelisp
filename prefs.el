@@ -124,6 +124,9 @@
 ; turn off suspend-frame. I never, ever want this!
 (global-set-key "\C-x\C-z"      nil)
 
+; magit
+(global-set-key (kbd "C-x g") 'magit-status)
+
 ; fixes for specific keys
 (when (not is-win32)
   ;; http://www.cs.cmu.edu/cgi-bin/info2www?(emacs)Keyboard%20Translations
