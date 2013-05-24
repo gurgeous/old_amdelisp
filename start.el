@@ -28,7 +28,8 @@
 (package-initialize)
 
 (let ((packages
-       '(ascii coffee-mode csharp-mode css-mode go-mode
+       '(ascii coffee-mode csharp-mode css-mode
+               exec-path-from-shell go-mode
                guess-offset js2-mode less-css-mode lorem-ipsum
                lua-mode magit markdown-mode pager php-mode
                rainbow-mode ruby-mode solarized-theme
