@@ -29,6 +29,20 @@
   (insert (format "%d" current-num))
   (setq current-num (+ current-num 1)))
 
+
+(defun uniq-region-lines (beg end)
+  "Remove duplicate adjacent lines in region."
+  (interactive "*r")
+  (save-excursion
+    (goto-char beg)
+    (while (re-search-forward "^\\(.*\n\\)\\1+" end t)
+      (replace-match "\\1"))))
+
+(defun uniq-buffer-lines ()
+  "Remove duplicate adjacent lines in the current buffer."
+  (interactive)
+  (uniq-region-lines (point-min) (point-max)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; hippie/tabs
 
