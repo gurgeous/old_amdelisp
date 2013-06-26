@@ -21,31 +21,42 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Packages
 
-(setq package-archives '(("marmalade" . "http://marmalade-repo.org/packages/")
-                         ("ELPA" . "http://tromey.com/elpa/")
-                         ("gnu" . "http://elpa.gnu.org/packages/")))
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives
+             '("marmalade" . "http://marmalade-repo.org/packages/") t)
 
 (package-initialize)
 
-(let ((packages
-       '(ascii coffee-mode csharp-mode css-mode
-               exec-path-from-shell go-mode
-               guess-offset js2-mode less-css-mode lorem-ipsum
-               lua-mode magit markdown-mode pager php-mode
-               rainbow-mode ruby-mode solarized-theme
-               volatile-highlights yaml-mode yari))
-      (install nil))
-  ;; do we have to install anything?
-  (dolist (i packages)
-    (if (not (package-installed-p i))
-        (setq install t)))
-  (when install
-    (message "Refreshing package database...")
-    (package-refresh-contents)
+;; http://melpa.milkbox.net/#known-issues
+(defadvice package-compute-transaction
+  (before package-compute-transaction-reverse (package-list requirements) activate compile)
+  "reverse the requirements"
+  (setq requirements (reverse requirements))
+  (print requirements))
+
+;; install these packages, if necessary
+(defun install-packages (packages)
+  (let ((install nil))
     (dolist (i packages)
-      (when (not (package-installed-p i))
-        (message "Installing package %s" i)
-        (package-install i)))))
+      (if (not (package-installed-p i))
+          (setq install t)))
+    (when install
+      (message "Refreshing package database...")
+      (package-refresh-contents)
+      (dolist (i packages)
+        (when (not (package-installed-p i))
+          (message "Installing package %s" i)
+          (package-install i))))))
+
+(install-packages
+ '(ascii coffee-mode csharp-mode css-mode
+         exec-path-from-shell go-mode guess-offset haml-mode
+         js2-mode less-css-mode lorem-ipsum lua-mode magit
+         markdown-mode pager php-mode python-mode rainbow-mode
+         ruby-mode solarized-theme volatile-highlights yaml-mode
+         yari))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Preload stuff.
