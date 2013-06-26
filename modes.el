@@ -236,7 +236,6 @@
    backward-delete-char-untabify-method 'untabify
    js2-mode-escape-quotes nil
    js2-basic-offset 2
-   js2-enter-indents-newline t
    tab-width 2)
   ;; use this to turn OFF the standard js stuff
   ;; indent-line-function 'indent-relative-maybe
@@ -686,18 +685,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; jade-mode
 
-(eval-when-compile (require 'jade-mode))
-(defun my-jade-setup ()
-  (make-local-variable 'standard-indent)
-  (setq standard-indent 2)
-  (define-key jade-mode-map [C-left] 'my-decrease)
-  (define-key jade-mode-map [C-right] 'my-increase))
-(add-hook 'jade-mode-hook 'my-jade-setup)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; yaml mode - the current version is missing autoloads. sigh
-
-(autoload 'yaml-mode
-  (format "%s/.emacs.d/elpa/yaml-mode-0.0.7/yaml-mode" (getenv "HOME"))
-  "yaml" t nil)
-(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+;; (eval-when-compile (require 'jade-mode))
+;; (defun my-jade-setup ()
+;;   (make-local-variable 'standard-indent)
+;;   (setq standard-indent 2)
+;;   (define-key jade-mode-map [C-left] 'my-decrease)
+;;   (define-key jade-mode-map [C-right] 'my-increase))
+;; (add-hook 'jade-mode-hook 'my-jade-setup)
