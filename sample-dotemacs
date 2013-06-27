@@ -16,33 +16,32 @@
 ;;
 
 ; solarized, slightly customized
-(load "solarized-theme")
-(load-theme 'solarized-dark t)
+(require 'solarized)
 
-(let ((class '((class color) (min-colors 89)))
-      (yellow    "#b58900")
-      (orange    "#cb4b16")
-      (red       "#dc322f")
-      (magenta   "#d33682")
-      (violet    "#6c71c4")
-      (blue      "#268bd2")
-      (cyan      "#2aa198")
-      (green     "#859900")
-      (yellow-l  "#DEB542"))
-  (custom-theme-set-faces
-   'user
-   `(cursor ((,class (:background ,yellow-l))))
-   `(font-lock-comment-face ((,class (:foreground ,green))))
-   `(font-lock-comment-delimiter-face ((,class (:foreground ,green))))
-   `(font-lock-constant-face ((,class (:foreground ,cyan :weight bold))))
-   `(font-lock-function-name-face ((,class (:foreground ,yellow))))
-   `(font-lock-keyword-face ((,class (:foreground ,blue :weight bold))))
-   `(font-lock-string-face ((,class (:foreground ,red))))
-   `(font-lock-type-face ((,class (:foreground ,orange))))
-   `(git-gutter:added ((,class (:foreground ,green))))
-   `(git-gutter:deleted ((,class (:foreground ,red))))
-   `(git-gutter:modified ((,class (:foreground ,blue))))
-   ))
+(defun my-childtheme ()
+  (let (
+        (mode-line   "#094757") ; lighter version of base02
+        (mode-line-d "#083a47") ; darker version of mode-line
+        )
+    (custom-theme-set-faces
+     theme-name
+     `(cursor ((,class (:background ,yellow-l))))
+     `(font-lock-comment-face ((,class (:foreground ,green))))
+     `(font-lock-comment-delimiter-face ((,class (:foreground ,green))))
+     `(font-lock-constant-face ((,class (:foreground ,cyan :weight bold))))
+     `(font-lock-function-name-face ((,class (:foreground ,yellow))))
+     `(font-lock-keyword-face ((,class (:foreground ,blue :weight bold))))
+     `(font-lock-string-face ((,class (:foreground ,red))))
+     `(font-lock-type-face ((,class (:foreground ,orange))))
+     `(git-gutter:added ((,class (:foreground ,green :background ,green))))
+     `(git-gutter:deleted ((,class (:foreground ,red :background ,red))))
+     `(git-gutter:modified ((,class (:foreground ,blue :background ,blue))))
+     `(mode-line ((,class (:background ,mode-line))))
+     `(mode-line-inactive ((,class (:background ,mode-line-d))))
+     )))
+
+(deftheme my-theme)
+(create-solarized-theme 'dark 'my-theme 'my-childtheme)
 
 ;; fix some faces when running in a shell
 (when (not window-system)
