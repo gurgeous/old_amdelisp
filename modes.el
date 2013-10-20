@@ -245,7 +245,7 @@
   (define-key js2-mode-map [C-left] 'my-decrease)
   (define-key js2-mode-map [C-right] 'my-increase))
 (add-hook 'js2-mode-hook 'my-js2-setup)
-(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.\\(js\\|json\\)$" . js2-mode))
 
 ;; coffee
 (eval-when-compile (require 'coffee-mode))

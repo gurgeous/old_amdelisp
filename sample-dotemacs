@@ -38,6 +38,7 @@
      `(git-gutter:modified ((,class (:foreground ,blue :background ,blue))))
      `(mode-line ((,class (:background ,mode-line))))
      `(mode-line-inactive ((,class (:background ,mode-line-d))))
+     `(rainbow-delimiters-unmatched-face ((,class (:foreground "red"))))
      )))
 
 (deftheme my-theme)
@@ -55,8 +56,8 @@
   (set-face-font 'default
                  (cond
                   (is-win32 "Andale-10")
-                  ((> (x-display-pixel-height) 900) "Inconsolata-14")
-                  (t "Inconsolata-12"))))
+                  ((> (x-display-pixel-height) 900) "Anonymous Pro-14")
+                  (t "Anonymous Pro-13"))))
 
 ;;
 ;; keys
