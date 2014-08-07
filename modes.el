@@ -692,3 +692,8 @@
 ;;   (define-key jade-mode-map [C-left] 'my-decrease)
 ;;   (define-key jade-mode-map [C-right] 'my-increase))
 ;; (add-hook 'jade-mode-hook 'my-jade-setup)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; go-mode
+(eval-when-compile (require 'go-mode))
