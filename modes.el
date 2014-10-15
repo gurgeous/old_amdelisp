@@ -696,4 +696,4 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; go-mode
-(eval-when-compile (require 'go-mode))
+(require 'go-mode)
