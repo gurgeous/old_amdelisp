@@ -29,13 +29,6 @@
 
 (package-initialize)
 
-;; http://melpa.milkbox.net/#known-issues
-(defadvice package-compute-transaction
-  (before package-compute-transaction-reverse (package-list requirements) activate compile)
-  "reverse the requirements"
-  (setq requirements (reverse requirements))
-  (print requirements))
-
 ;; install these packages, if necessary
 (defun install-packages (packages)
   (let ((install nil))
@@ -56,7 +49,7 @@
          js2-mode less-css-mode lorem-ipsum lua-mode magit
          markdown-mode pager php-mode python-mode rainbow-mode
          ruby-mode solarized-theme volatile-highlights yaml-mode
-         yari))
+         yari column-enforce-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Preload stuff.
